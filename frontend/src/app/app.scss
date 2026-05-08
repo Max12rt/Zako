@@ -216,3 +216,65 @@
 .op--skm       { color: #00bfa5; }
 .op--lka       { color: #c62828; }
 .op--leo       { color: #fdd835; background: #1a1a1a; padding: 6px 14px; border-radius: 4px; }
+
+@media (max-width: 1023px) {
+  .search {
+    grid-template-columns: 1fr 1fr;
+  }
+  .search__cta {
+    grid-column: 1 / -1;
+  }
+  .operators__grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+  .hero__title {
+    font-size: 44px;
+  }
+}
+
+@media (max-width: 767px) {
+  .hero__inner,
+  .operators__inner {
+    padding: 0 20px;
+  }
+  .hero__topbar {
+    padding: 20px 0 16px;
+  }
+  .logo__word {
+    font-size: 32px;
+  }
+  .logo__tagline {
+    display: none;
+  }
+  .login-btn span {
+    display: none;
+  }
+  .login-btn {
+    padding: 10px;
+  }
+  .hero__title {
+    font-size: 32px;
+    margin: 32px 0 20px;
+  }
+  .search {
+    grid-template-columns: 1fr;
+  }
+  .search__cta {
+    grid-column: auto;
+    width: 100%;
+  }
+  .operators {
+    padding: 48px 0 64px;
+  }
+  .operators__title {
+    font-size: 22px;
+    margin-bottom: 32px;
+  }
+  .operators__grid {
+    grid-template-columns: repeat(2, 1fr);
+    row-gap: 40px;
+  }
+  .op {
+    font-size: 16px;
+  }
+}
