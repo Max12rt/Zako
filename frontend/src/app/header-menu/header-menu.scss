@@ -8,14 +8,14 @@
 .actions-pill {
   display: inline-flex;
   align-items: stretch;
-  border: 2px solid rgba(255, 255, 255, 0.85);
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
   border-radius: 16px;
   background: transparent;
   overflow: hidden;
   transition: border-color 0.15s ease;
 }
 .actions-pill:hover,
-.actions-pill--active { border-color: #fff; }
+.actions-pill--active { border-color: rgba(255, 255, 255, 0.6); }
 
 .pill-btn {
   display: inline-flex;
@@ -40,7 +40,7 @@
 
 .pill-btn--menu {
   padding: 13px 18px;
-  border-left: 2px solid rgba(255, 255, 255, 0.85);
+  border-left: 1.5px solid rgba(255, 255, 255, 0.35);
 }
 .pill-btn--menu svg { width: 26px; height: 26px; }
 
