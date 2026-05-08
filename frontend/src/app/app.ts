@@ -1,4 +1,4 @@
-import { Component, inject } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { RouterOutlet } from '@angular/router';
 import { HeaderMenu } from './header-menu/header-menu';
@@ -16,41 +16,44 @@ import { TripResponseDto, TripService } from './services/trip.service';
 export class App {
   private trips = inject(TripService);
 
-  searchDate: Date = new Date();
-  fromStation: StationDto | null = null;
-  toStation: StationDto | null = null;
+  searchDate = signal<Date>(new Date());
+  fromStation = signal<StationDto | null>(null);
+  toStation = signal<StationDto | null>(null);
+
+  results = signal<TripResponseDto[]>([]);
+  searching = signal(false);
+  searched = signal(false);
+  searchError = signal<string | null>(null);
 
   swapStations() {
-    const tmp = this.fromStation;
-    this.fromStation = this.toStation;
-    this.toStation = tmp;
+    const a = this.fromStation();
+    const b = this.toStation();
+    this.fromStation.set(b);
+    this.toStation.set(a);
   }
 
-  results: TripResponseDto[] = [];
-  searching = false;
-  searched = false;
-  searchError: string | null = null;
-
   submit() {
-    this.searchError = null;
-    if (!this.fromStation || !this.toStation) {
-      this.searchError = 'Wybierz stację odjazdu i przyjazdu z listy.';
+    this.searchError.set(null);
+    const from = this.fromStation();
+    const to = this.toStation();
+    if (!from || !to) {
+      this.searchError.set('Wybierz stację odjazdu i przyjazdu z listy.');
       return;
     }
-    if (this.fromStation.id === this.toStation.id) {
-      this.searchError = 'Stacja odjazdu i przyjazdu muszą być różne.';
+    if (from.id === to.id) {
+      this.searchError.set('Stacja odjazdu i przyjazdu muszą być różne.');
       return;
     }
-    this.searching = true;
-    this.searched = true;
-    const date = this.searchDate.toISOString().slice(0, 10);
+    this.searching.set(true);
+    this.searched.set(true);
+    const date = this.searchDate().toISOString().slice(0, 10);
     this.trips.search({
-      fromStationId: this.fromStation.id,
-      toStationId: this.toStation.id,
+      fromStationId: from.id,
+      toStationId: to.id,
       date
     }).subscribe({
-      next: list => { this.results = list; this.searching = false; },
-      error: () => { this.searchError = 'Błąd wyszukiwania połączeń.'; this.searching = false; }
+      next: list => { this.results.set(list); this.searching.set(false); },
+      error: () => { this.searchError.set('Błąd wyszukiwania połączeń.'); this.searching.set(false); }
     });
   }
 }

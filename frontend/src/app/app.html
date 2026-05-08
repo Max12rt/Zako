@@ -24,18 +24,18 @@
             placeholder="Stacja odjazdu"
             leadingIcon="depart"
             [showLocateButton]="true"
-            [value]="fromStation"
-            (stationSelected)="fromStation = $event" />
+            [value]="fromStation()"
+            (stationSelected)="fromStation.set($event)" />
 
           <app-station-input
             placeholder="Stacja przyjazdu"
             leadingIcon="arrive"
             trailingIcon="none"
-            [value]="toStation"
-            (stationSelected)="toStation = $event">
+            [value]="toStation()"
+            (stationSelected)="toStation.set($event)">
             <button trailing type="button" class="swap-btn"
                     (click)="swapStations(); $event.stopPropagation()"
-                    [disabled]="!fromStation && !toStation">
+                    [disabled]="!fromStation() && !toStation()">
               <svg viewBox="0 0 24 24" aria-hidden="true">
                 <path d="M7 8h10m-3-3l3 3-3 3M17 16H7m3 3l-3-3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
               </svg>
@@ -43,25 +43,25 @@
             </button>
           </app-station-input>
 
-          <app-date-picker [value]="searchDate" (valueChange)="searchDate = $event" />
+          <app-date-picker [value]="searchDate()" (valueChange)="searchDate.set($event)" />
         </div>
 
-        <button type="button" class="search__cta" [disabled]="searching" (click)="submit()">
+        <button type="button" class="search__cta" [disabled]="searching()" (click)="submit()">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
             <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
             <path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
-          <span>{{ searching ? 'Szukam…' : 'Znajdź połączenie' }}</span>
+          <span>{{ searching() ? 'Szukam…' : 'Znajdź połączenie' }}</span>
         </button>
       </div>
 
-      @if (searchError) {
-        <p class="search__error">{{ searchError }}</p>
+      @if (searchError()) {
+        <p class="search__error">{{ searchError() }}</p>
       }
 
-      @if (results.length > 0) {
+      @if (results().length > 0) {
         <ul class="results" role="list">
-          @for (t of results; track t.id) {
+          @for (t of results(); track t.id) {
             <li class="results__item">
               <span class="results__time">{{ t.departureTime | slice:11:16 }} – {{ t.arrivalTime | slice:11:16 }}</span>
               <span class="results__route">{{ t.routeName }}</span>
@@ -70,7 +70,7 @@
             </li>
           }
         </ul>
-      } @else if (searched && !searching && !searchError) {
+      } @else if (searched() && !searching() && !searchError()) {
         <p class="search__empty">Brak połączeń dla wybranych kryteriów.</p>
       }
     </div>
