@@ -6,10 +6,10 @@
 .trigger {
   display: flex;
   align-items: center;
-  gap: 12px;
+  gap: 10px;
   background: transparent;
-  height: 64px;
-  padding: 0 8px 0 16px;
+  height: 100%;
+  padding: 0 6px 0 14px;
   color: var(--koleo-text);
   cursor: pointer;
 }

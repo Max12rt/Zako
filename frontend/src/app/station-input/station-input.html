@@ -1,9 +1,18 @@
 <div class="field" [class.field--open]="open() && results().length > 0">
-  <svg class="field__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
-    <rect x="6" y="4" width="12" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
-    <path d="M9 19l-2 2M15 19l2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-    <path d="M3 11h3M18 11h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
-  </svg>
+  @if (leadingIcon === 'depart') {
+    <svg class="field__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 4v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M9 12h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M16 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  } @else {
+    <svg class="field__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 4v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4 12h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M11 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  }
+
 
   <input type="text"
          [placeholder]="placeholder"

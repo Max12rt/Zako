@@ -23,11 +23,13 @@
         <div class="search-bar">
           <app-station-input
             placeholder="Stacja odjazdu"
+            leadingIcon="depart"
             [showLocateButton]="true"
             (stationSelected)="fromStation = $event" />
 
           <app-station-input
             placeholder="Stacja przyjazdu"
+            leadingIcon="arrive"
             trailingIcon="chevron"
             (stationSelected)="toStation = $event" />
 

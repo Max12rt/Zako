@@ -78,8 +78,10 @@
   display: grid;
   grid-template-columns: 1fr 1fr 1fr;
   background: var(--koleo-input-bg);
-  border-radius: 10px;
+  border-radius: 12px;
   height: 64px;
+  padding: 6px;
+  gap: 6px;
   overflow: visible;
   position: relative;
 }
@@ -88,12 +90,16 @@
 .search-bar > app-date-picker {
   display: block;
   position: relative;
+  border: 1px solid var(--koleo-input-border);
+  border-radius: 8px;
+  background: var(--koleo-input-bg);
+  transition: border-color 0.15s ease;
+  min-width: 0;
 }
 
-.search-bar > app-station-input + app-station-input,
-.search-bar > app-station-input + app-date-picker,
-.search-bar > app-date-picker + app-date-picker {
-  border-left: 1px solid var(--koleo-input-border);
+.search-bar > app-station-input:focus-within,
+.search-bar > app-date-picker:focus-within {
+  border-color: var(--koleo-navy);
 }
 
 .search__cta {
@@ -225,12 +231,6 @@
   .search-bar {
     grid-template-columns: 1fr;
     height: auto;
-  }
-  .search-bar > app-station-input + app-station-input,
-  .search-bar > app-station-input + app-date-picker,
-  .search-bar > app-date-picker + app-date-picker {
-    border-left: 0;
-    border-top: 1px solid var(--koleo-input-border);
   }
   .search__cta { width: 100%; padding: 0 24px; }
   .results__item { grid-template-columns: 1fr; gap: 4px; }

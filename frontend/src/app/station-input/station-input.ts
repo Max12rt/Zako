@@ -12,6 +12,7 @@ import { StationDto, StationService } from '../services/station.service';
 export class StationInput {
   @Input() placeholder = '';
   @Input() showLocateButton = false;
+  @Input() leadingIcon: 'depart' | 'arrive' = 'depart';
   @Input() trailingIcon: 'pin' | 'chevron' = 'pin';
   @Output() stationSelected = new EventEmitter<StationDto>();
 
