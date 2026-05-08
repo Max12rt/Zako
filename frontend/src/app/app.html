@@ -1,6 +1,90 @@
 <router-outlet />
 
 <main class="page">
-  <!-- hero will go here in Task 3 -->
+  <section class="hero">
+    <div class="hero__inner">
+      <header class="hero__topbar">
+        <div class="logo-group">
+          <a class="logo" href="/" aria-label="KOLEO – strona główna">
+            <svg class="logo__mark" viewBox="0 0 32 32" aria-hidden="true">
+              <path d="M6 4 L24 16 L6 28 Z" fill="#3ed3c4"/>
+              <path d="M14 12 L26 20 L14 28 Z" fill="#ffffff"/>
+            </svg>
+            <span class="logo__word">KOLEO</span>
+          </a>
+          <p class="logo__tagline">ROZKŁAD JAZDY PKP I BILETY</p>
+        </div>
+        <div class="hero__actions">
+          <button type="button" class="login-btn">
+            <span>Zaloguj się</span>
+            <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+              <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
+              <path d="M4 21c1.5-4 5-6 8-6s6.5 2 8 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            </svg>
+          </button>
+          <button type="button" class="menu-btn" aria-label="Menu">
+            <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
+              <path d="M4 7h16M4 12h16M4 17h16" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+            </svg>
+          </button>
+        </div>
+      </header>
+
+      <h1 class="hero__title">Dokąd jedziemy?</h1>
+
+      <form class="search" (submit)="$event.preventDefault()">
+        <label class="search__field">
+          <svg class="search__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="4" width="12" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M9 19l-2 2M15 19l2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M3 11h3M18 11h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Stacja odjazdu" />
+          <svg class="search__icon-trailing" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <circle cx="12" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          </svg>
+        </label>
+
+        <label class="search__field">
+          <svg class="search__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="6" y="4" width="12" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M9 19l-2 2M15 19l2 2" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <path d="M3 11h3M18 11h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="text" placeholder="Stacja przyjazdu" />
+          <svg class="search__icon-trailing" viewBox="0 0 24 24" aria-hidden="true">
+            <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+          </svg>
+        </label>
+
+        <label class="search__field">
+          <svg class="search__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+            <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+          </svg>
+          <input type="text" value="8 maja, 17:15" readonly />
+          <svg class="search__icon-trailing" viewBox="0 0 24 24" aria-hidden="true">
+            <rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+            <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+            <circle cx="8" cy="14" r="1" fill="currentColor"/>
+            <circle cx="12" cy="14" r="1" fill="currentColor"/>
+            <circle cx="16" cy="14" r="1" fill="currentColor"/>
+            <circle cx="8" cy="17" r="1" fill="currentColor"/>
+            <circle cx="12" cy="17" r="1" fill="currentColor"/>
+          </svg>
+        </label>
+
+        <button type="submit" class="search__cta">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>Znajdź połączenie</span>
+        </button>
+      </form>
+    </div>
+  </section>
+
   <!-- operators band will go here in Task 4 -->
 </main>
