@@ -24,13 +24,24 @@
             placeholder="Stacja odjazdu"
             leadingIcon="depart"
             [showLocateButton]="true"
+            [value]="fromStation"
             (stationSelected)="fromStation = $event" />
 
           <app-station-input
             placeholder="Stacja przyjazdu"
             leadingIcon="arrive"
-            trailingIcon="chevron"
-            (stationSelected)="toStation = $event" />
+            trailingIcon="none"
+            [value]="toStation"
+            (stationSelected)="toStation = $event">
+            <button trailing type="button" class="swap-btn"
+                    (click)="swapStations(); $event.stopPropagation()"
+                    [disabled]="!fromStation && !toStation">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 8h10m-3-3l3 3-3 3M17 16H7m3 3l-3-3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Zamień stacje</span>
+            </button>
+          </app-station-input>
 
           <app-date-picker [value]="searchDate" (valueChange)="searchDate = $event" />
         </div>
@@ -81,6 +92,7 @@
         <li class="op op--skm">SKM</li>
         <li class="op op--lka">ŁKA</li>
         <li class="op op--leo">Leo Express</li>
+        <li class="op op--regiojet"><span class="rj-bars">||</span>REGIOJET</li>
       </ul>
     </div>
   </section>

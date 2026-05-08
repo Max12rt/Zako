@@ -13,7 +13,12 @@ export class StationInput {
   @Input() placeholder = '';
   @Input() showLocateButton = false;
   @Input() leadingIcon: 'depart' | 'arrive' = 'depart';
-  @Input() trailingIcon: 'pin' | 'chevron' = 'pin';
+  @Input() trailingIcon: 'pin' | 'chevron' | 'none' = 'pin';
+  @Input() set value(v: StationDto | null | undefined) {
+    if (v === undefined) return;
+    this.selected.set(v);
+    this.query.set(v?.name ?? '');
+  }
   @Output() stationSelected = new EventEmitter<StationDto>();
 
   private stations = inject(StationService);

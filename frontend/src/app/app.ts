@@ -20,6 +20,12 @@ export class App {
   fromStation: StationDto | null = null;
   toStation: StationDto | null = null;
 
+  swapStations() {
+    const tmp = this.fromStation;
+    this.fromStation = this.toStation;
+    this.toStation = tmp;
+  }
+
   results: TripResponseDto[] = [];
   searching = false;
   searched = false;
