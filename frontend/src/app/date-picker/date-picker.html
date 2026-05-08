@@ -1,0 +1,85 @@
+<div class="trigger" (click)="toggle()" [class.trigger--open]="open()">
+  <svg class="trigger__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+    <circle cx="12" cy="12" r="9" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    <path d="M12 7v5l3 2" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>
+  <div class="trigger__values">
+    <span class="trigger__date">{{ displayDate() }}</span>
+    <span class="trigger__sep">|</span>
+    <span class="trigger__time">{{ displayTime() }}</span>
+  </div>
+  <button type="button" class="trigger__cal-btn" aria-label="Otwórz kalendarz" (click)="$event.stopPropagation(); toggle()">
+    <svg viewBox="0 0 24 24" aria-hidden="true">
+      <rect x="3" y="5" width="18" height="16" rx="2" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <path d="M3 10h18M8 3v4M16 3v4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <circle cx="8" cy="14" r="1" fill="currentColor"/>
+      <circle cx="12" cy="14" r="1" fill="currentColor"/>
+      <circle cx="16" cy="14" r="1" fill="currentColor"/>
+      <circle cx="8" cy="17" r="1" fill="currentColor"/>
+      <circle cx="12" cy="17" r="1" fill="currentColor"/>
+    </svg>
+  </button>
+</div>
+
+@if (open()) {
+  <div class="panel" role="dialog" (click)="$event.stopPropagation()">
+    <div class="panel__main">
+      <div class="cal">
+        <header class="cal__header">
+          <button type="button" class="cal__nav" aria-label="Poprzedni miesiąc" (click)="prevMonth()">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M15 6l-6 6 6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+          <h3 class="cal__title">{{ monthLabel() }}</h3>
+          <button type="button" class="cal__nav" aria-label="Następny miesiąc" (click)="nextMonth()">
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+          </button>
+        </header>
+
+        <div class="cal__weekdays">
+          @for (w of weekdays; track w) {
+            <span class="cal__weekday">{{ w }}</span>
+          }
+        </div>
+
+        <div class="cal__grid">
+          @for (cell of cells(); track cell.date.toISOString()) {
+            <button type="button"
+                    class="cal__cell"
+                    [class.cal__cell--out]="!cell.inMonth"
+                    [class.cal__cell--selected]="isSelectedDay(cell)"
+                    [class.cal__cell--today]="cell.isToday && !isSelectedDay(cell)"
+                    (click)="selectDay(cell)">
+              {{ cell.day }}
+            </button>
+          }
+        </div>
+      </div>
+
+      <div class="time">
+        <ul class="time__col" role="listbox" aria-label="Godzina">
+          @for (h of hours; track h) {
+            <li class="time__cell"
+                [class.time__cell--selected]="hour() === h"
+                (click)="selectHour(h)">
+              {{ h.toString().padStart(2, '0') }}
+            </li>
+          }
+        </ul>
+        <ul class="time__col time__col--narrow" role="listbox" aria-label="Minuty">
+          @for (m of minutes; track m) {
+            <li class="time__cell"
+                [class.time__cell--selected]="minute() === m"
+                (click)="selectMinute(m)">
+              {{ m.toString().padStart(2, '0') }}
+            </li>
+          }
+        </ul>
+      </div>
+    </div>
+
+    <footer class="panel__footer">
+      <button type="button" class="btn btn--ghost" (click)="setNow()">Teraz</button>
+      <button type="button" class="btn btn--primary" (click)="closePanel()">Zamknij</button>
+    </footer>
+  </div>
+}
