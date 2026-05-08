@@ -14,10 +14,10 @@
   }
 
 
-  <input type="text"
+  <input #inputEl type="text"
          [placeholder]="placeholder"
-         [ngModel]="query()"
-         (ngModelChange)="onInput($event)"
+         [value]="query()"
+         (input)="onInput(inputEl.value)"
          (focus)="onFocus()"
          (keydown)="onKey($event)"
          autocomplete="off" />

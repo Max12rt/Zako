@@ -1,11 +1,9 @@
 import { Component, ElementRef, EventEmitter, HostListener, inject, Input, Output, signal } from '@angular/core';
-import { FormsModule } from '@angular/forms';
 import { debounceTime, distinctUntilChanged, of, Subject, switchMap, catchError } from 'rxjs';
 import { StationDto, StationService } from '../services/station.service';
 
 @Component({
   selector: 'app-station-input',
-  imports: [FormsModule],
   templateUrl: './station-input.html',
   styleUrl: './station-input.scss'
 })
