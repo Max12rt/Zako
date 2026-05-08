@@ -3,6 +3,7 @@
 -- Paste into Supabase Dashboard → SQL Editor → Run
 -- Idempotent: safe to re-run; uses IF NOT EXISTS / ON CONFLICT.
 -- Mirrors the JPA entities in monolith/src/main/java/zako/monolith.
+-- VARCHAR(255) used for String fields so Hibernate `ddl-auto=validate` passes.
 -- =====================================================================
 
 -- --- ENUMs (mirrored from Java enums; stored as text via Hibernate)
@@ -19,10 +20,10 @@ END $$;
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS users (
   id          BIGSERIAL PRIMARY KEY,
-  first_name  TEXT          NOT NULL,
-  last_name   TEXT          NOT NULL,
-  email       TEXT          NOT NULL UNIQUE,
-  password    TEXT          NOT NULL,
+  first_name  VARCHAR(255)  NOT NULL,
+  last_name   VARCHAR(255)  NOT NULL,
+  email       VARCHAR(255)  NOT NULL UNIQUE,
+  password    VARCHAR(255)  NOT NULL,
   role        role          NOT NULL DEFAULT 'USER',
   created_at  TIMESTAMP     NOT NULL DEFAULT NOW()
 );
@@ -33,9 +34,9 @@ CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS stations (
   id         BIGSERIAL PRIMARY KEY,
-  name       TEXT             NOT NULL UNIQUE,
-  city       TEXT             NOT NULL,
-  code       TEXT             NOT NULL UNIQUE,
+  name       VARCHAR(255)     NOT NULL UNIQUE,
+  city       VARCHAR(255)     NOT NULL,
+  code       VARCHAR(255)     NOT NULL UNIQUE,
   latitude   DOUBLE PRECISION,
   longitude  DOUBLE PRECISION
 );
@@ -47,7 +48,7 @@ CREATE INDEX IF NOT EXISTS idx_stations_city_lower ON stations (LOWER(city));
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS trains (
   id            BIGSERIAL PRIMARY KEY,
-  train_number  TEXT          NOT NULL UNIQUE,
+  train_number  VARCHAR(255)  NOT NULL UNIQUE,
   type          train_type    NOT NULL,
   total_seats   INTEGER       NOT NULL CHECK (total_seats > 0)
 );
@@ -57,7 +58,7 @@ CREATE TABLE IF NOT EXISTS trains (
 -- =====================================================================
 CREATE TABLE IF NOT EXISTS routes (
   id    BIGSERIAL PRIMARY KEY,
-  name  TEXT      NOT NULL
+  name  VARCHAR(255) NOT NULL
 );
 
 -- =====================================================================
@@ -103,7 +104,7 @@ CREATE TABLE IF NOT EXISTS tickets (
   seat_number      INTEGER,
   price            NUMERIC(10, 2)  NOT NULL CHECK (price >= 0),
   status           ticket_status   NOT NULL DEFAULT 'ACTIVE',
-  ticket_code      TEXT            NOT NULL UNIQUE,
+  ticket_code      VARCHAR(255)    NOT NULL UNIQUE,
   purchased_at     TIMESTAMP       NOT NULL DEFAULT NOW(),
   CONSTRAINT chk_ticket_stations_differ CHECK (from_station_id <> to_station_id)
 );
