@@ -18,7 +18,7 @@
 
       <h1 class="hero__title">Dokąd jedziemy?</h1>
 
-      <form class="search" (ngSubmit)="submit()">
+      <div class="search">
         <div class="search-bar">
           <app-station-input
             placeholder="Stacja odjazdu"
@@ -46,14 +46,14 @@
           <app-date-picker [value]="searchDate" (valueChange)="searchDate = $event" />
         </div>
 
-        <button type="submit" class="search__cta" [disabled]="searching">
+        <button type="button" class="search__cta" [disabled]="searching" (click)="submit()">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
             <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
             <path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
           </svg>
           <span>{{ searching ? 'Szukam…' : 'Znajdź połączenie' }}</span>
         </button>
-      </form>
+      </div>
 
       @if (searchError) {
         <p class="search__error">{{ searchError }}</p>
