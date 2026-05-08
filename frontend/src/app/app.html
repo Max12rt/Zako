@@ -20,17 +20,19 @@
       <h1 class="hero__title">Dokąd jedziemy?</h1>
 
       <form class="search" (ngSubmit)="submit()">
-        <app-station-input
-          placeholder="Stacja odjazdu"
-          [showLocateButton]="true"
-          (stationSelected)="fromStation = $event" />
+        <div class="search-bar">
+          <app-station-input
+            placeholder="Stacja odjazdu"
+            [showLocateButton]="true"
+            (stationSelected)="fromStation = $event" />
 
-        <app-station-input
-          placeholder="Stacja przyjazdu"
-          trailingIcon="chevron"
-          (stationSelected)="toStation = $event" />
+          <app-station-input
+            placeholder="Stacja przyjazdu"
+            trailingIcon="chevron"
+            (stationSelected)="toStation = $event" />
 
-        <app-date-picker [value]="searchDate" (valueChange)="searchDate = $event" />
+          <app-date-picker [value]="searchDate" (valueChange)="searchDate = $event" />
+        </div>
 
         <button type="submit" class="search__cta" [disabled]="searching">
           <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">

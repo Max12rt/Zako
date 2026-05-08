@@ -3,36 +3,37 @@
   display: block;
 }
 
-.actions {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+.actions-pill {
+  display: inline-flex;
+  align-items: stretch;
+  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border-radius: 12px;
+  background: transparent;
+  overflow: hidden;
+  transition: border-color 0.15s ease;
 }
+.actions-pill:hover,
+.actions-pill--active { border-color: rgba(255, 255, 255, 0.6); }
 
-.login-btn,
-.menu-btn {
+.pill-btn {
   display: inline-flex;
   align-items: center;
   gap: 12px;
   background: transparent;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
+  border: 0;
   color: #fff;
-  border-radius: 12px;
   padding: 10px 16px;
   font-size: 15px;
   font-weight: 500;
   cursor: pointer;
-  transition: background 0.15s ease, border-color 0.15s ease;
+  transition: background 0.15s ease;
 }
+.pill-btn:hover { background: rgba(255, 255, 255, 0.08); }
 
-.login-btn:hover,
-.menu-btn:hover,
-.login-btn--active {
-  background: rgba(255, 255, 255, 0.08);
-  border-color: rgba(255, 255, 255, 0.6);
+.pill-btn--menu {
+  padding: 10px 14px;
+  border-left: 1.5px solid rgba(255, 255, 255, 0.35);
 }
-
-.menu-btn { padding: 10px; }
 
 .panel {
   position: absolute;
@@ -170,6 +171,11 @@
 }
 .flag__top { top: 0; background: #fff; }
 .flag__bot { bottom: 0; background: #dc143c; }
+
+@media (max-width: 767px) {
+  .pill-btn--login span { display: none; }
+  .pill-btn--login { padding: 10px 12px; }
+}
 
 @media (max-width: 480px) {
   .panel { width: calc(100vw - 32px); right: -8px; }

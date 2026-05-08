@@ -7,16 +7,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  background: var(--koleo-input-bg);
-  border-radius: 10px;
+  background: transparent;
   height: 64px;
   padding: 0 8px 0 16px;
   color: var(--koleo-text);
   cursor: pointer;
-  border: 2px solid transparent;
-  transition: border-color 0.15s ease;
 }
-.trigger--open { border-color: var(--koleo-navy); }
 
 .trigger__icon-leading {
   width: 22px; height: 22px; color: var(--koleo-muted); flex-shrink: 0;

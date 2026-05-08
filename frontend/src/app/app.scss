@@ -69,9 +69,31 @@
 
 .search {
   display: grid;
-  grid-template-columns: 1fr 1fr 1fr auto;
+  grid-template-columns: 1fr auto;
   gap: 12px;
   background: transparent;
+}
+
+.search-bar {
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  background: var(--koleo-input-bg);
+  border-radius: 10px;
+  height: 64px;
+  overflow: visible;
+  position: relative;
+}
+
+.search-bar > app-station-input,
+.search-bar > app-date-picker {
+  display: block;
+  position: relative;
+}
+
+.search-bar > app-station-input + app-station-input,
+.search-bar > app-station-input + app-date-picker,
+.search-bar > app-date-picker + app-date-picker {
+  border-left: 1px solid var(--koleo-input-border);
 }
 
 .search__cta {
@@ -80,7 +102,7 @@
   justify-content: center;
   gap: 10px;
   height: 64px;
-  padding: 0 28px;
+  padding: 0 44px;
   background: var(--koleo-pink);
   color: #fff;
   border: 0;
@@ -89,6 +111,7 @@
   font-weight: 600;
   cursor: pointer;
   transition: background 0.15s ease, opacity 0.15s ease;
+  white-space: nowrap;
 }
 .search__cta:hover { background: var(--koleo-pink-hover); }
 .search__cta:disabled { opacity: 0.7; cursor: progress; }
@@ -184,8 +207,9 @@
 .op--leo       { color: #fdd835; background: #1a1a1a; padding: 6px 14px; border-radius: 4px; }
 
 @media (max-width: 1023px) {
-  .search { grid-template-columns: 1fr 1fr; }
-  .search__cta { grid-column: 1 / -1; }
+  .search { grid-template-columns: 1fr; }
+  .search__cta { width: 100%; }
+  .search-bar { grid-template-columns: 1fr 1fr 1fr; }
   .results__item { grid-template-columns: 140px 1fr 100px 90px; gap: 12px; }
   .operators__grid { grid-template-columns: repeat(3, 1fr); }
   .hero__title { font-size: 44px; }
@@ -198,8 +222,17 @@
   .logo__word { font-size: 32px; }
   .logo__tagline { display: none; }
   .hero__title { font-size: 32px; margin: 32px 0 20px; }
-  .search { grid-template-columns: 1fr; }
-  .search__cta { grid-column: auto; width: 100%; }
+  .search-bar {
+    grid-template-columns: 1fr;
+    height: auto;
+  }
+  .search-bar > app-station-input + app-station-input,
+  .search-bar > app-station-input + app-date-picker,
+  .search-bar > app-date-picker + app-date-picker {
+    border-left: 0;
+    border-top: 1px solid var(--koleo-input-border);
+  }
+  .search__cta { width: 100%; padding: 0 24px; }
   .results__item { grid-template-columns: 1fr; gap: 4px; }
   .results__seats { text-align: left; }
   .operators { padding: 48px 0 64px; }

@@ -1,5 +1,5 @@
-<div class="actions">
-  <button type="button" class="login-btn" [class.login-btn--active]="open()" (click)="toggle()">
+<div class="actions-pill" [class.actions-pill--active]="open()">
+  <button type="button" class="pill-btn pill-btn--login" (click)="toggle()">
     <span>Zaloguj się</span>
     <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
       <circle cx="12" cy="8" r="4" fill="none" stroke="currentColor" stroke-width="1.8"/>
@@ -7,7 +7,7 @@
     </svg>
   </button>
 
-  <button type="button" class="menu-btn" [attr.aria-label]="open() ? 'Zamknij menu' : 'Otwórz menu'" (click)="toggle()">
+  <button type="button" class="pill-btn pill-btn--menu" [attr.aria-label]="open() ? 'Zamknij menu' : 'Otwórz menu'" (click)="toggle()">
     @if (open()) {
       <svg viewBox="0 0 24 24" width="22" height="22" aria-hidden="true">
         <path d="M6 6l12 12M18 6L6 18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>

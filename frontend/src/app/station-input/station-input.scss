@@ -7,17 +7,13 @@
   position: relative;
   display: flex;
   align-items: center;
-  background: var(--koleo-input-bg);
-  border-radius: 10px;
+  background: transparent;
   height: 64px;
   padding: 0 8px 0 16px;
   gap: 12px;
   color: var(--koleo-text);
   cursor: text;
-  border: 2px solid transparent;
-  transition: border-color 0.15s ease;
 }
-.field--open { border-color: var(--koleo-navy); border-bottom-left-radius: 0; border-bottom-right-radius: 0; }
 
 .field input {
   flex: 1;
@@ -59,20 +55,19 @@
 
 .suggest {
   position: absolute;
-  top: 100%;
+  top: calc(100% + 6px);
   left: 0;
   right: 0;
   background: #fff;
   list-style: none;
   margin: 0;
   padding: 8px 0;
-  border: 2px solid var(--koleo-navy);
-  border-top: 0;
-  border-radius: 0 0 10px 10px;
+  border: 1px solid #ececf3;
+  border-radius: 10px;
   z-index: 40;
   max-height: 320px;
   overflow-y: auto;
-  box-shadow: 0 14px 30px rgba(20, 18, 60, 0.18);
+  box-shadow: 0 14px 30px rgba(20, 18, 60, 0.22);
 }
 
 .suggest__item {
