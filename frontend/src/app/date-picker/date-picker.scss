@@ -192,9 +192,23 @@
 .btn--primary:hover { background: var(--koleo-navy-deep); }
 
 @media (max-width: 767px) {
+  .trigger { gap: 8px; padding: 0 4px 0 12px; }
+  .trigger__values { gap: 10px; font-size: 16px; }
   .panel { width: calc(100vw - 32px); left: 0; }
   .panel__main { grid-template-columns: 1fr; }
   .time { border-left: 0; border-top: 1px solid #ececf3; height: 200px; grid-template-columns: 1fr 1fr; }
   .time__col { display: flex; overflow-x: auto; padding: 12px; }
   .time__cell { margin: 0 4px; min-width: 56px; }
+}
+
+@media (max-width: 479px) {
+  .panel { width: calc(100vw - 24px); }
+  .cal { padding: 16px 12px 12px; }
+  .cal__cell { height: 36px; font-size: 14px; border-radius: 8px; }
+  .cal__title { font-size: 18px; }
+  .cal__nav { width: 36px; height: 36px; }
+  .cal__weekday { font-size: 12px; }
+  .panel__footer { padding: 12px 16px; }
+  .btn { padding: 0 18px; font-size: 14px; height: 40px; }
+  .time { height: 160px; }
 }
