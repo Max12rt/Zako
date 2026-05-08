@@ -40,7 +40,16 @@
 
 .pill-btn--menu {
   padding: 13px 18px;
-  border-left: 1.5px solid rgba(255, 255, 255, 0.35);
+  position: relative;
+}
+.pill-btn--menu::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: -1.5px;
+  bottom: -1.5px;
+  width: 1.5px;
+  background: rgba(255, 255, 255, 0.35);
 }
 .pill-btn--menu svg { width: 26px; height: 26px; }
 
