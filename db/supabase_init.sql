@@ -6,14 +6,10 @@
 -- VARCHAR(255) used for String fields so Hibernate `ddl-auto=validate` passes.
 -- =====================================================================
 
--- --- ENUMs (mirrored from Java enums; stored as text via Hibernate)
-DO $$
-BEGIN
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'role')           THEN CREATE TYPE role           AS ENUM ('USER', 'ADMIN'); END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'train_type')     THEN CREATE TYPE train_type     AS ENUM ('IC', 'TLK', 'EIC', 'EN', 'R', 'KM'); END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'trip_status')    THEN CREATE TYPE trip_status    AS ENUM ('SCHEDULED', 'DELAYED', 'CANCELLED', 'COMPLETED'); END IF;
-  IF NOT EXISTS (SELECT 1 FROM pg_type WHERE typname = 'ticket_status')  THEN CREATE TYPE ticket_status  AS ENUM ('ACTIVE', 'USED', 'CANCELLED', 'EXPIRED'); END IF;
-END $$;
+-- Enum-like values are stored as VARCHAR(32) with CHECK constraints.
+-- Hibernate @Enumerated(EnumType.STRING) maps Java enums to VARCHAR by default,
+-- so VARCHAR + CHECK is more compatible than native PG ENUM types
+-- (which require explicit ::cast and break Hibernate validate).
 
 -- =====================================================================
 -- USERS
@@ -24,7 +20,7 @@ CREATE TABLE IF NOT EXISTS users (
   last_name   VARCHAR(255)  NOT NULL,
   email       VARCHAR(255)  NOT NULL UNIQUE,
   password    VARCHAR(255)  NOT NULL,
-  role        role          NOT NULL DEFAULT 'USER',
+  role        VARCHAR(32)   NOT NULL DEFAULT 'USER' CHECK (role IN ('USER', 'ADMIN')),
   created_at  TIMESTAMP     NOT NULL DEFAULT NOW()
 );
 CREATE INDEX IF NOT EXISTS idx_users_email ON users (email);
@@ -49,7 +45,7 @@ CREATE INDEX IF NOT EXISTS idx_stations_city_lower ON stations (LOWER(city));
 CREATE TABLE IF NOT EXISTS trains (
   id            BIGSERIAL PRIMARY KEY,
   train_number  VARCHAR(255)  NOT NULL UNIQUE,
-  type          train_type    NOT NULL,
+  type          VARCHAR(32)   NOT NULL CHECK (type IN ('IC', 'TLK', 'EIC', 'EN', 'R', 'KM')),
   total_seats   INTEGER       NOT NULL CHECK (total_seats > 0)
 );
 
@@ -84,7 +80,7 @@ CREATE TABLE IF NOT EXISTS trips (
   route_id        BIGINT       NOT NULL REFERENCES routes (id)  ON DELETE RESTRICT,
   departure_time  TIMESTAMP    NOT NULL,
   arrival_time    TIMESTAMP    NOT NULL,
-  status          trip_status  NOT NULL DEFAULT 'SCHEDULED',
+  status          VARCHAR(32)  NOT NULL DEFAULT 'SCHEDULED' CHECK (status IN ('SCHEDULED', 'DELAYED', 'CANCELLED', 'COMPLETED')),
   available_seats INTEGER      NOT NULL CHECK (available_seats >= 0),
   CONSTRAINT chk_trip_times CHECK (arrival_time > departure_time)
 );
@@ -103,7 +99,7 @@ CREATE TABLE IF NOT EXISTS tickets (
   to_station_id    BIGINT          NOT NULL REFERENCES stations (id) ON DELETE RESTRICT,
   seat_number      INTEGER,
   price            NUMERIC(10, 2)  NOT NULL CHECK (price >= 0),
-  status           ticket_status   NOT NULL DEFAULT 'ACTIVE',
+  status           VARCHAR(32)     NOT NULL DEFAULT 'ACTIVE' CHECK (status IN ('ACTIVE', 'USED', 'CANCELLED', 'EXPIRED')),
   ticket_code      VARCHAR(255)    NOT NULL UNIQUE,
   purchased_at     TIMESTAMP       NOT NULL DEFAULT NOW(),
   CONSTRAINT chk_ticket_stations_differ CHECK (from_station_id <> to_station_id)
