@@ -1,39 +1,48 @@
 :host {
   position: relative;
   display: block;
+  margin-top: -10px;
+  margin-right: -8px;
 }
 
 .actions-pill {
   display: inline-flex;
   align-items: stretch;
-  border: 1.5px solid rgba(255, 255, 255, 0.35);
-  border-radius: 12px;
+  border: 2px solid rgba(255, 255, 255, 0.85);
+  border-radius: 16px;
   background: transparent;
   overflow: hidden;
   transition: border-color 0.15s ease;
 }
 .actions-pill:hover,
-.actions-pill--active { border-color: rgba(255, 255, 255, 0.6); }
+.actions-pill--active { border-color: #fff; }
 
 .pill-btn {
   display: inline-flex;
   align-items: center;
-  gap: 12px;
+  gap: 14px;
   background: transparent;
   border: 0;
   color: #fff;
-  padding: 10px 16px;
-  font-size: 15px;
+  padding: 13px 22px;
+  font-size: 17px;
   font-weight: 500;
   cursor: pointer;
   transition: background 0.15s ease;
 }
 .pill-btn:hover { background: rgba(255, 255, 255, 0.08); }
 
-.pill-btn--menu {
-  padding: 10px 14px;
-  border-left: 1.5px solid rgba(255, 255, 255, 0.35);
+.pill-btn__avatar {
+  width: 34px;
+  height: 34px;
+  flex-shrink: 0;
 }
+
+.pill-btn--menu {
+  padding: 13px 18px;
+  border-left: 2px solid rgba(255, 255, 255, 0.85);
+}
+.pill-btn--menu svg { width: 26px; height: 26px; }
 
 .panel {
   position: absolute;
@@ -173,8 +182,13 @@
 .flag__bot { bottom: 0; background: #dc143c; }
 
 @media (max-width: 767px) {
+  :host { margin-top: 0; margin-right: 0; }
+  .pill-btn { padding: 10px 14px; font-size: 15px; gap: 10px; }
   .pill-btn--login span { display: none; }
   .pill-btn--login { padding: 10px 12px; }
+  .pill-btn__avatar { width: 26px; height: 26px; }
+  .pill-btn--menu { padding: 10px 12px; }
+  .pill-btn--menu svg { width: 22px; height: 22px; }
 }
 
 @media (max-width: 480px) {
