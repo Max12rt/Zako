@@ -38,6 +38,20 @@ public class StationService {
                 .map(StationResponse::from).toList();
     }
 
+    public StationResponse nearest(double lat, double lon) {
+        Station nearest = stationRepository.findAll().stream()
+                .filter(s -> s.getLatitude() != null && s.getLongitude() != null)
+                .min((a, b) -> Double.compare(distSq(a, lat, lon), distSq(b, lat, lon)))
+                .orElseThrow(() -> new ResourceNotFoundException("No stations available"));
+        return StationResponse.from(nearest);
+    }
+
+    private double distSq(Station s, double lat, double lon) {
+        double dy = s.getLatitude() - lat;
+        double dx = s.getLongitude() - lon;
+        return dy * dy + dx * dx;
+    }
+
     public StationResponse update(Long id, StationRequest request) {
         Station station = findById(id);
         station.setName(request.name());

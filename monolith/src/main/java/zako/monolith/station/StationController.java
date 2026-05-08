@@ -37,6 +37,11 @@ public class StationController {
         return stationService.search(query);
     }
 
+    @GetMapping("/nearest")
+    public StationResponse nearest(@RequestParam double lat, @RequestParam double lon) {
+        return stationService.nearest(lat, lon);
+    }
+
     @PutMapping("/{id}")
     public StationResponse update(@PathVariable Long id, @Valid @RequestBody StationRequest request) {
         return stationService.update(id, request);
