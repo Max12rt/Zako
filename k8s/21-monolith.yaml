@@ -48,12 +48,14 @@ spec:
                   name: postgres-secret
                   key: POSTGRES_PASSWORD
           readinessProbe:
-            tcpSocket:
+            httpGet:
+              path: /actuator/health
               port: 9090
             initialDelaySeconds: 30
             periodSeconds: 10
           livenessProbe:
-            tcpSocket:
+            httpGet:
+              path: /actuator/health
               port: 9090
             initialDelaySeconds: 60
             periodSeconds: 30

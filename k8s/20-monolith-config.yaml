@@ -7,3 +7,4 @@ data:
   SPRING_DATASOURCE_URL: jdbc:postgresql://postgres:5432/ticket_monolith_db
   SPRING_JPA_HIBERNATE_DDL_AUTO: update
   SERVER_PORT: "9090"
+  SPRING_PROFILES_ACTIVE: "prod"
