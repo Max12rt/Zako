@@ -210,3 +210,19 @@
   .panel__btn { height: 44px; font-size: 15px; }
   .panel__item { padding: 10px 4px; font-size: 15px; }
 }
+
+.panel__user {
+  padding: 12px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.panel__user-name {
+  font-weight: 600;
+  color: #fff;
+  font-size: .95rem;
+}
+.panel__user-email {
+  font-size: .82rem;
+  color: #8899aa;
+}

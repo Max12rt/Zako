@@ -1,24 +1,28 @@
-import { Component, ElementRef, HostListener, signal } from '@angular/core';
+import { Component, inject, signal } from '@angular/core';
+import { CommonModule } from '@angular/common';
+import { Router, RouterLink } from '@angular/router';
+import { AuthService } from '../auth/auth.service';
 
 @Component({
   selector: 'app-header-menu',
+  imports: [CommonModule, RouterLink],
   templateUrl: './header-menu.html',
   styleUrl: './header-menu.scss'
 })
 export class HeaderMenu {
+  auth = inject(AuthService);
+  private router = inject(Router);
   open = signal(false);
 
-  constructor(private host: ElementRef<HTMLElement>) {}
-
   toggle() { this.open.update(v => !v); }
-  close()  { this.open.set(false); }
+  close() { this.open.set(false); }
 
-  @HostListener('document:click', ['$event'])
-  onDocClick(e: MouseEvent) {
-    if (!this.open()) return;
-    if (!this.host.nativeElement.contains(e.target as Node)) this.close();
+  logout() {
+    this.auth.logout();
+    this.close();
   }
 
-  @HostListener('document:keydown.escape')
-  onEsc() { this.close(); }
+  goLogin() { this.router.navigate(['/login']); this.close(); }
+  goRegister() { this.router.navigate(['/register']); this.close(); }
+  goMyTickets() { this.router.navigate(['/my-tickets']); this.close(); }
 }
