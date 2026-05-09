@@ -43,7 +43,7 @@ public class JwtService {
         try {
             parseClaims(token);
             return true;
-        } catch (Exception e) {
+        } catch (io.jsonwebtoken.JwtException | IllegalArgumentException e) {
             return false;
         }
     }
