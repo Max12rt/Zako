@@ -1,0 +1,38 @@
+<div class="auth-page">
+  <div class="auth-card">
+    <a class="auth-logo" href="/">
+      <svg viewBox="0 0 28 22" width="28" aria-hidden="true">
+        <path d="M5 3 L20 11 L5 19" fill="none" stroke="#3ed3c4" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+      </svg>
+      <span>KOLEO</span>
+    </a>
+
+    <h1 class="auth-card__title">Zaloguj się</h1>
+
+    <div class="auth-form">
+      <label class="field">
+        <span class="field__label">E-mail</span>
+        <input class="field__input" type="email" autocomplete="email"
+               [ngModel]="email()" (ngModelChange)="email.set($event)" />
+      </label>
+
+      <label class="field">
+        <span class="field__label">Hasło</span>
+        <input class="field__input" type="password" autocomplete="current-password"
+               [ngModel]="password()" (ngModelChange)="password.set($event)" />
+      </label>
+
+      @if (error()) {
+        <p class="auth-form__error">{{ error() }}</p>
+      }
+
+      <button type="button" class="auth-form__btn" [disabled]="loading()" (click)="submit()">
+        {{ loading() ? 'Logowanie…' : 'Zaloguj się' }}
+      </button>
+    </div>
+
+    <p class="auth-card__switch">
+      Nie masz konta? <a routerLink="/register">Załóż konto</a>
+    </p>
+  </div>
+</div>
