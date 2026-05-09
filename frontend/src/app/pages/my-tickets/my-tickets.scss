@@ -1,0 +1,112 @@
+.tickets-page {
+  min-height: 100vh;
+  background: #0d1b2a;
+  padding: 32px 16px;
+}
+
+.tickets-inner {
+  max-width: 720px;
+  margin: 0 auto;
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+}
+
+.tickets-header {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  &__back {
+    background: none;
+    border: none;
+    color: #8899aa;
+    font-size: .9rem;
+    cursor: pointer;
+    padding: 0;
+    text-align: left;
+    width: fit-content;
+    &:hover { color: #fff; }
+  }
+
+  &__title {
+    color: #fff;
+    font-size: 1.8rem;
+    font-weight: 700;
+    margin: 0;
+  }
+}
+
+.tickets-msg {
+  color: #8899aa;
+  &--error { color: #ff6b6b; }
+}
+
+.tickets-list {
+  list-style: none;
+  padding: 0;
+  margin: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 16px;
+}
+
+.ticket-card {
+  background: #162032;
+  border: 1px solid rgba(255,255,255,.08);
+  border-radius: 12px;
+  padding: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+
+  &__top {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+
+  &__route { color: #fff; font-weight: 600; font-size: 1rem; }
+  &__code { color: #3ed3c4; font-size: .82rem; font-family: monospace; }
+
+  &__mid {
+    display: flex;
+    gap: 24px;
+    flex-wrap: wrap;
+  }
+
+  &__detail {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+  }
+
+  &__label { color: #8899aa; font-size: .8rem; }
+  &__value { color: #fff; font-size: .95rem; }
+
+  &__badge {
+    display: inline-block;
+    padding: 3px 10px;
+    border-radius: 20px;
+    font-size: .8rem;
+    font-weight: 600;
+    background: rgba(255,255,255,.08);
+    color: #8899aa;
+
+    &--active { background: rgba(62,211,196,.15); color: #3ed3c4; }
+    &--pending { background: rgba(255,200,80,.12); color: #ffc850; }
+    &--cancelled { background: rgba(255,107,107,.12); color: #ff6b6b; }
+  }
+
+  &__cancel {
+    background: none;
+    border: 1px solid rgba(255,107,107,.4);
+    color: #ff6b6b;
+    border-radius: 6px;
+    padding: 7px 14px;
+    font-size: .88rem;
+    cursor: pointer;
+    align-self: flex-start;
+    &:hover { background: rgba(255,107,107,.08); }
+  }
+}

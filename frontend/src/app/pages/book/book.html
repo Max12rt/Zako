@@ -1,0 +1,55 @@
+<div class="book-page">
+  <div class="book-card">
+    <button type="button" class="book-card__back" (click)="goBack()">
+      ← Wróć
+    </button>
+
+    <h1 class="book-card__title">Kup bilet</h1>
+
+    @if (success()) {
+      <div class="book-success">
+        <svg viewBox="0 0 24 24" width="48" height="48" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" fill="none" stroke="#3ed3c4" stroke-width="1.8"/>
+          <path d="M7 12l3.5 3.5L17 8" stroke="#3ed3c4" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+        </svg>
+        <p>Bilet opłacony!</p>
+        <button type="button" class="book-btn" (click)="goMyTickets()">Moje bilety</button>
+      </div>
+    } @else if (trip()) {
+      <div class="book-trip">
+        <div class="book-trip__row">
+          <span class="book-trip__label">Trasa</span>
+          <span class="book-trip__value">{{ trip()!.routeName }}</span>
+        </div>
+        <div class="book-trip__row">
+          <span class="book-trip__label">Odjazd</span>
+          <span class="book-trip__value">{{ trip()!.departureTime | slice:0:16 }}</span>
+        </div>
+        <div class="book-trip__row">
+          <span class="book-trip__label">Przyjazd</span>
+          <span class="book-trip__value">{{ trip()!.arrivalTime | slice:0:16 }}</span>
+        </div>
+        <div class="book-trip__row">
+          <span class="book-trip__label">Pociąg</span>
+          <span class="book-trip__value">{{ trip()!.train.type }} {{ trip()!.train.number }}</span>
+        </div>
+        <div class="book-trip__row book-trip__row--price">
+          <span class="book-trip__label">Cena</span>
+          <span class="book-trip__price">29,90 zł</span>
+        </div>
+      </div>
+
+      @if (error()) {
+        <p class="book-error">{{ error() }}</p>
+      }
+
+      <button type="button" class="book-btn" [disabled]="loading()" (click)="pay()">
+        {{ loading() ? 'Przetwarzanie…' : 'Zapłać 29,90 zł' }}
+      </button>
+    } @else if (error()) {
+      <p class="book-error">{{ error() }}</p>
+    } @else {
+      <p class="book-loading">Ładowanie…</p>
+    }
+  </div>
+</div>
