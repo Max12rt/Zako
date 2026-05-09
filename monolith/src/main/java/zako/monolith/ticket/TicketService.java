@@ -51,6 +51,19 @@ public class TicketService {
     }
 
     @Transactional
+    public TicketResponse pay(Long ticketId, Long userId) {
+        Ticket ticket = findById(ticketId);
+        if (!ticket.getUser().getId().equals(userId)) {
+            throw new IllegalStateException("Not authorized to pay for this ticket");
+        }
+        if (ticket.getPaymentStatus() == PaymentStatus.PAID) {
+            throw new IllegalStateException("Ticket already paid");
+        }
+        ticket.setPaymentStatus(PaymentStatus.PAID);
+        return TicketResponse.from(ticketRepository.save(ticket));
+    }
+
+    @Transactional
     public TicketResponse cancel(Long ticketId, Long userId) {
         Ticket ticket = findById(ticketId);
 
