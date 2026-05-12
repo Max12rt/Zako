@@ -12,13 +12,16 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class TicketEventConsumer {
 
+    private static final String TOPIC_PURCHASED = "ticket.purchased";
+    private static final String TOPIC_CANCELLED  = "ticket.cancelled";
+
     private final TripRepository tripRepository;
 
-    @KafkaListener(topics = {"ticket.purchased", "ticket.cancelled"})
+    @KafkaListener(topics = {TOPIC_PURCHASED, TOPIC_CANCELLED})
     @Transactional
     public void onTicketEvent(TicketEvent event) {
         tripRepository.findById(event.tripId()).ifPresentOrElse(trip -> {
-            int delta = "ticket.cancelled".equals(event.type()) ? event.seats() : -event.seats();
+            int delta = TOPIC_CANCELLED.equals(event.type()) ? event.seats() : -event.seats();
             trip.setAvailableSeats(Math.max(0, trip.getAvailableSeats() + delta));
             tripRepository.save(trip);
             log.info("Updated availableSeats for trip {} by {}", event.tripId(), delta);

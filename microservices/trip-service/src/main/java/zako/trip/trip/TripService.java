@@ -23,6 +23,7 @@ public class TripService {
     private final TrainService trainService;
     private final RouteRepository routeRepository;
 
+    @Transactional
     public TripResponse create(TripRequest request) {
         Train train = trainService.findById(request.trainId());
         Route route = routeRepository.findById(request.routeId())
