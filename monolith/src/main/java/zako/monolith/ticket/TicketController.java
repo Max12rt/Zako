@@ -43,6 +43,12 @@ public class TicketController {
         return ticketService.getUserTickets(userId);
     }
 
+    @GetMapping("/my")
+    public List<TicketResponse> getMyTickets(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ticketService.getUserTickets(user.getId());
+    }
+
     @GetMapping("/{id}")
     public TicketResponse getById(@PathVariable Long id) {
         return ticketService.getById(id);

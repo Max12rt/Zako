@@ -39,7 +39,7 @@ export class TicketApiService {
     return this.http.post<TicketDto>(`/api/tickets/${ticketId}/cancel`, {});
   }
 
-  getUserTickets(userId: number): Observable<TicketDto[]> {
-    return this.http.get<TicketDto[]>(`/api/tickets/user/${userId}`);
+  getMyTickets(): Observable<TicketDto[]> {
+    return this.http.get<TicketDto[]>('/api/tickets/my');
   }
 }

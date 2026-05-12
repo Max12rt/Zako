@@ -2,7 +2,6 @@ import { Component, inject, OnInit, signal } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { Router } from '@angular/router';
 import { TicketApiService, TicketDto } from '../../services/ticket-api.service';
-import { AuthService } from '../../auth/auth.service';
 
 @Component({
   selector: 'app-my-tickets',
@@ -12,7 +11,6 @@ import { AuthService } from '../../auth/auth.service';
 })
 export class MyTicketsPage implements OnInit {
   private ticketApi = inject(TicketApiService);
-  private auth = inject(AuthService);
   private router = inject(Router);
 
   tickets = signal<TicketDto[]>([]);
@@ -20,9 +18,7 @@ export class MyTicketsPage implements OnInit {
   error = signal<string | null>(null);
 
   ngOnInit() {
-    const userId = this.auth.currentUser()?.id;
-    if (!userId) { this.router.navigate(['/login']); return; }
-    this.ticketApi.getUserTickets(userId).subscribe({
+    this.ticketApi.getMyTickets().subscribe({
       next: t => { this.tickets.set(t); this.loading.set(false); },
       error: () => { this.error.set('Błąd ładowania biletów.'); this.loading.set(false); }
     });
