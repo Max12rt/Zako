@@ -1,0 +1,85 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: ticket-service-config
+  namespace: zako-ms
+data:
+  SPRING_DATASOURCE_URL: jdbc:postgresql://postgres-ticket:5432/ticket_db
+  SERVER_PORT: "8083"
+  KAFKA_BOOTSTRAP_SERVERS: kafka-0.kafka.zako-ms.svc.cluster.local:9092
+  TRIP_SERVICE_BASE_URL: http://trip-service.zako-ms.svc.cluster.local:8082
+  OTEL_EXPORTER_OTLP_ENDPOINT: "http://jaeger.zako-ms.svc.cluster.local:4318/v1/traces"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: ticket-service
+  namespace: zako-ms
+spec:
+  selector:
+    app: ticket-service
+  ports:
+    - name: http
+      port: 8083
+      targetPort: 8083
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: ticket-service
+  namespace: zako-ms
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: ticket-service
+  template:
+    metadata:
+      labels:
+        app: ticket-service
+    spec:
+      containers:
+        - name: ticket-service
+          image: zako/ticket-service:latest
+          imagePullPolicy: IfNotPresent
+          ports:
+            - name: http
+              containerPort: 8083
+          envFrom:
+            - configMapRef:
+                name: ticket-service-config
+          env:
+            - name: SPRING_DATASOURCE_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-ticket-secret
+                  key: POSTGRES_USER
+            - name: SPRING_DATASOURCE_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: postgres-ticket-secret
+                  key: POSTGRES_PASSWORD
+            - name: JWT_SECRET
+              valueFrom:
+                secretKeyRef:
+                  name: app-secret
+                  key: JWT_SECRET
+          readinessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 30
+            periodSeconds: 10
+          livenessProbe:
+            httpGet:
+              path: /actuator/health
+              port: 8083
+            initialDelaySeconds: 60
+            periodSeconds: 30
+          resources:
+            requests:
+              cpu: "150m"
+              memory: "320Mi"
+            limits:
+              cpu: "750m"
+              memory: "640Mi"

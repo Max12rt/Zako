@@ -1,0 +1,71 @@
+apiVersion: v1
+kind: Secret
+metadata:
+  name: postgres-ticket-secret
+  namespace: zako-ms
+type: Opaque
+stringData:
+  POSTGRES_DB: ticket_db
+  POSTGRES_USER: postgres
+  POSTGRES_PASSWORD: "1234"
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: postgres-ticket
+  namespace: zako-ms
+spec:
+  clusterIP: None
+  selector:
+    app: postgres-ticket
+  ports:
+    - name: pg
+      port: 5432
+      targetPort: 5432
+---
+apiVersion: apps/v1
+kind: StatefulSet
+metadata:
+  name: postgres-ticket
+  namespace: zako-ms
+spec:
+  serviceName: postgres-ticket
+  replicas: 1
+  selector:
+    matchLabels:
+      app: postgres-ticket
+  template:
+    metadata:
+      labels:
+        app: postgres-ticket
+    spec:
+      containers:
+        - name: postgres
+          image: postgres:16-alpine
+          ports:
+            - name: pg
+              containerPort: 5432
+          envFrom:
+            - secretRef:
+                name: postgres-ticket-secret
+          volumeMounts:
+            - name: data
+              mountPath: /var/lib/postgresql/data
+          readinessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres", "-d", "ticket_db"]
+            initialDelaySeconds: 5
+            periodSeconds: 5
+          livenessProbe:
+            exec:
+              command: ["pg_isready", "-U", "postgres"]
+            initialDelaySeconds: 15
+            periodSeconds: 15
+  volumeClaimTemplates:
+    - metadata:
+        name: data
+      spec:
+        accessModes: ["ReadWriteOnce"]
+        resources:
+          requests:
+            storage: 1Gi
