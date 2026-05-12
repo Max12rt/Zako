@@ -22,7 +22,7 @@
             <div class="ticket-card__mid">
               <div class="ticket-card__detail">
                 <span class="ticket-card__label">Odjazd</span>
-                <span class="ticket-card__value">{{ t.trip.departureTime | slice:0:16 }}</span>
+                <span class="ticket-card__value">{{ (t.departureTime ?? t.trip?.departureTime) | slice:0:16 }}</span>
               </div>
               <div class="ticket-card__detail">
                 <span class="ticket-card__label">Cena</span>
