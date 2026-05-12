@@ -37,7 +37,9 @@ export class RegisterPage {
         });
       },
       error: (err) => {
-        this.error.set(err?.error?.message ?? 'Błąd rejestracji. Sprawdź dane.');
+        const backendMessage = err?.error?.message ?? (typeof err?.error === 'string' ? err.error : null);
+        const statusHint = err?.status === 409 ? 'Ten e-mail jest już zajęty.' : null;
+        this.error.set(backendMessage ?? statusHint ?? 'Błąd rejestracji. Sprawdź dane.');
         this.loading.set(false);
       }
     });
