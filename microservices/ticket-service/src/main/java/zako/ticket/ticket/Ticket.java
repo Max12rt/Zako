@@ -19,6 +19,8 @@ public class Ticket {
     private String toStationCity;
     private String toStationCode;
     private Integer seatNumber;
+    private LocalDateTime departureTime;
+    private LocalDateTime arrivalTime;
     @Column(nullable = false, precision = 10, scale = 2) private BigDecimal price;
     @Enumerated(EnumType.STRING) @Column(nullable = false) @Builder.Default
     private TicketStatus status = TicketStatus.ACTIVE;

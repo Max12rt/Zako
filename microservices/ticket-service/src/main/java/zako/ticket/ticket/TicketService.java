@@ -42,6 +42,8 @@ public class TicketService {
                 .toStationName(toStation.name())
                 .toStationCity(toStation.city())
                 .toStationCode(toStation.code())
+                .departureTime(trip.departureTime())
+                .arrivalTime(trip.arrivalTime())
                 .price(request.price())
                 .ticketCode(UUID.randomUUID().toString().toUpperCase().replace("-", "").substring(0, 12))
                 .build();
