@@ -2,9 +2,11 @@
 FROM maven:3.9-eclipse-temurin-21 AS build
 WORKDIR /workspace
 ENV MAVEN_OPTS="-Dmaven.wagon.http.ssl.insecure=true -Dmaven.wagon.http.ssl.allowall=true"
-COPY pom.xml ../pom.xml
+COPY pom.xml ./pom.xml
 COPY auth-service/pom.xml auth-service/pom.xml
-RUN mvn -B -q -pl auth-service dependency:go-offline
+COPY trip-service/pom.xml trip-service/pom.xml
+COPY ticket-service/pom.xml ticket-service/pom.xml
+RUN mvn -B -q -pl auth-service -am dependency:go-offline
 COPY auth-service/src auth-service/src
 RUN mvn -B -q -pl auth-service -DskipTests package
 

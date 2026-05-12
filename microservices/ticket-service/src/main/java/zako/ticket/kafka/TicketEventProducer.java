@@ -9,7 +9,7 @@ public class TicketEventProducer {
     private static final String TOPIC_PURCHASED = "ticket.purchased";
     private static final String TOPIC_CANCELLED  = "ticket.cancelled";
 
-    private final KafkaTemplate<String, TicketEvent> kafkaTemplate;
+    private final KafkaTemplate<String, Object> kafkaTemplate;
 
     public void publishPurchased(Ticket t) {
         kafkaTemplate.send(TOPIC_PURCHASED,
