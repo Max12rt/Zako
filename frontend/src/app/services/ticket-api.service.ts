@@ -12,7 +12,10 @@ export interface PurchaseRequest {
 export interface TicketDto {
   id: number;
   userId: number;
-  trip: any;
+  trip?: { departureTime?: string; arrivalTime?: string };
+  tripId?: number;
+  departureTime?: string;
+  arrivalTime?: string;
   fromStation: { id: number; name: string; city: string; code: string };
   toStation: { id: number; name: string; city: string; code: string };
   seatNumber: number | null;
