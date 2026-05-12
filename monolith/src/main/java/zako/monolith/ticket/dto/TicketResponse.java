@@ -2,6 +2,7 @@ package zako.monolith.ticket.dto;
 
 import zako.monolith.station.dto.StationResponse;
 import zako.monolith.ticket.Ticket;
+import zako.monolith.ticket.PaymentStatus;
 import zako.monolith.ticket.TicketStatus;
 import zako.monolith.trip.dto.TripResponse;
 
@@ -17,6 +18,7 @@ public record TicketResponse(
         Integer seatNumber,
         BigDecimal price,
         TicketStatus status,
+        PaymentStatus paymentStatus,
         String ticketCode,
         LocalDateTime purchasedAt
 ) {
@@ -30,6 +32,7 @@ public record TicketResponse(
                 ticket.getSeatNumber(),
                 ticket.getPrice(),
                 ticket.getStatus(),
+                ticket.getPaymentStatus(),
                 ticket.getTicketCode(),
                 ticket.getPurchasedAt()
         );

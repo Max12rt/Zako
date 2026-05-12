@@ -1,0 +1,120 @@
+:host {
+  position: relative;
+  display: block;
+}
+
+.field {
+  position: relative;
+  display: flex;
+  align-items: center;
+  background: transparent;
+  height: 100%;
+  padding: 0 8px 0 14px;
+  gap: 10px;
+  color: var(--koleo-text);
+  cursor: text;
+}
+
+.field input {
+  flex: 1;
+  border: 0;
+  outline: 0;
+  background: transparent;
+  font-size: 17px;
+  color: var(--koleo-text);
+  min-width: 0;
+}
+.field input::placeholder { color: var(--koleo-muted); }
+
+.field__icon-leading,
+.field__icon-trailing {
+  width: 22px;
+  height: 22px;
+  color: var(--koleo-muted);
+  flex-shrink: 0;
+}
+
+.locate {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  height: 38px;
+  padding: 0 10px;
+  background: #ececf3;
+  border: 0;
+  border-radius: 8px;
+  color: var(--koleo-navy);
+  font-size: 13px;
+  font-weight: 500;
+  cursor: pointer;
+  transition: background 0.15s ease;
+  flex-shrink: 0;
+}
+.locate:hover { background: #e0deea; }
+.locate:disabled { opacity: 0.6; cursor: progress; }
+.locate svg { width: 16px; height: 16px; color: var(--koleo-navy); }
+
+.suggest {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  right: 0;
+  background: #fff;
+  list-style: none;
+  margin: 0;
+  padding: 8px 0;
+  border: 1px solid #ececf3;
+  border-radius: 10px;
+  z-index: 40;
+  max-height: 320px;
+  overflow-y: auto;
+  box-shadow: 0 14px 30px rgba(20, 18, 60, 0.22);
+}
+
+.suggest__item {
+  display: grid;
+  grid-template-columns: 24px 1fr auto;
+  gap: 12px;
+  align-items: center;
+  padding: 10px 16px;
+  cursor: pointer;
+  color: var(--koleo-navy);
+}
+.suggest__item:hover,
+.suggest__item--hl { background: #f4f5f9; }
+
+.suggest__item svg {
+  width: 22px;
+  height: 22px;
+  color: var(--koleo-muted);
+}
+
+.suggest__name { font-size: 16px; font-weight: 600; }
+.suggest__city { font-size: 13px; color: var(--koleo-muted); }
+.suggest__code {
+  font-size: 12px;
+  font-weight: 700;
+  letter-spacing: 0.06em;
+  color: var(--koleo-muted);
+  background: #ececf3;
+  padding: 4px 8px;
+  border-radius: 6px;
+}
+
+.error {
+  margin: 6px 0 0;
+  color: #ffd6d9;
+  font-size: 13px;
+}
+
+@media (max-width: 767px) {
+  .field { padding: 0 6px 0 12px; gap: 8px; min-height: 56px; }
+  .field input { font-size: 16px; }
+}
+
+@media (max-width: 479px) {
+  .locate span { display: none; }
+  .locate { padding: 0 8px; gap: 0; }
+  .field__icon-leading,
+  .field__icon-trailing { width: 20px; height: 20px; }
+}

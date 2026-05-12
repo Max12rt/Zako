@@ -47,6 +47,11 @@ public class Ticket {
     @Builder.Default
     private TicketStatus status = TicketStatus.ACTIVE;
 
+    @Enumerated(EnumType.STRING)
+    @Column(nullable = false)
+    @Builder.Default
+    private PaymentStatus paymentStatus = PaymentStatus.PENDING;
+
     @Column(unique = true, nullable = false)
     private String ticketCode;
 

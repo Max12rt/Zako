@@ -23,8 +23,6 @@
     </developers>
     <modules>
         <module>monolith</module>
-        <module>microservices</module>
-        <module>microservices/user-service</module>
     </modules>
     <scm>
         <connection/>

@@ -3,9 +3,11 @@ package zako.monolith.ticket;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
+import org.springframework.security.core.Authentication;
 import org.springframework.web.bind.annotation.*;
 import zako.monolith.ticket.dto.TicketRequest;
 import zako.monolith.ticket.dto.TicketResponse;
+import zako.monolith.user.User;
 
 import java.util.List;
 
@@ -18,19 +20,28 @@ public class TicketController {
 
     @PostMapping("/purchase")
     @ResponseStatus(HttpStatus.CREATED)
-    public TicketResponse purchase(@RequestParam Long userId,
-                                   @Valid @RequestBody TicketRequest request) {
-        return ticketService.purchase(userId, request);
+    public TicketResponse purchase(@Valid @RequestBody TicketRequest request,
+                                   Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ticketService.purchase(user.getId(), request);
+    }
+
+    @PostMapping("/{id}/pay")
+    public TicketResponse pay(@PathVariable Long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ticketService.pay(id, user.getId());
     }
 
     @PostMapping("/{id}/cancel")
-    public TicketResponse cancel(@PathVariable Long id, @RequestParam Long userId) {
-        return ticketService.cancel(id, userId);
+    public TicketResponse cancel(@PathVariable Long id, Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ticketService.cancel(id, user.getId());
     }
 
-    @GetMapping("/user/{userId}")
-    public List<TicketResponse> getUserTickets(@PathVariable Long userId) {
-        return ticketService.getUserTickets(userId);
+    @GetMapping("/my")
+    public List<TicketResponse> getMyTickets(Authentication authentication) {
+        User user = (User) authentication.getPrincipal();
+        return ticketService.getUserTickets(user.getId());
     }
 
     @GetMapping("/{id}")

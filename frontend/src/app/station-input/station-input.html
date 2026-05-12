@@ -1,0 +1,72 @@
+<div class="field" [class.field--open]="open() && results().length > 0">
+  @if (leadingIcon === 'depart') {
+    <svg class="field__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M5 4v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M9 12h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M16 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  } @else {
+    <svg class="field__icon-leading" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M19 4v16" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M4 12h11" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+      <path d="M11 8l4 4-4 4" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  }
+
+
+  <input #inputEl type="text"
+         [placeholder]="placeholder"
+         [value]="query()"
+         (input)="onInput(inputEl.value)"
+         (focus)="onFocus()"
+         (keydown)="onKey($event)"
+         autocomplete="off" />
+
+  @if (showLocateButton) {
+    <button type="button"
+            class="locate"
+            [disabled]="geoBusy()"
+            [attr.aria-label]="'Najbliższa stacja'"
+            (click)="locate()">
+      <svg viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+        <circle cx="12" cy="9" r="2.5" fill="var(--koleo-teal)" stroke="currentColor" stroke-width="1.8"/>
+      </svg>
+      <span>{{ geoBusy() ? '…' : 'Najbl.' }}</span>
+    </button>
+  } @else if (trailingIcon === 'chevron') {
+    <svg class="field__icon-trailing" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M9 6l6 6-6 6" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+    </svg>
+  } @else if (trailingIcon === 'pin') {
+    <svg class="field__icon-trailing" viewBox="0 0 24 24" aria-hidden="true">
+      <path d="M12 21s7-7.5 7-12a7 7 0 1 0-14 0c0 4.5 7 12 7 12z" fill="none" stroke="currentColor" stroke-width="1.8"/>
+      <circle cx="12" cy="9" r="2.5" fill="none" stroke="currentColor" stroke-width="1.8"/>
+    </svg>
+  }
+  <ng-content select="[trailing]"></ng-content>
+</div>
+
+@if (open() && results().length > 0) {
+  <ul class="suggest" role="listbox">
+    @for (s of results(); track s.id; let i = $index) {
+      <li class="suggest__item"
+          [class.suggest__item--hl]="i === highlight()"
+          (mousedown)="pick(s)">
+        <svg viewBox="0 0 24 24" aria-hidden="true">
+          <rect x="6" y="4" width="12" height="14" rx="3" fill="none" stroke="currentColor" stroke-width="1.8"/>
+          <path d="M3 11h3M18 11h3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+        </svg>
+        <div class="suggest__text">
+          <div class="suggest__name">{{ s.name }}</div>
+          <div class="suggest__city">{{ s.city }}</div>
+        </div>
+        <span class="suggest__code">{{ s.code }}</span>
+      </li>
+    }
+  </ul>
+}
+
+@if (geoError()) {
+  <p class="error">{{ geoError() }}</p>
+}

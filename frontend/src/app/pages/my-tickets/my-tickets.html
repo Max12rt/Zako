@@ -1,0 +1,51 @@
+<div class="tickets-page">
+  <div class="tickets-inner">
+    <div class="tickets-header">
+      <button type="button" class="tickets-header__back" (click)="goHome()">← Strona główna</button>
+      <h1 class="tickets-header__title">Moje bilety</h1>
+    </div>
+
+    @if (loading()) {
+      <p class="tickets-msg">Ładowanie…</p>
+    } @else if (error()) {
+      <p class="tickets-msg tickets-msg--error">{{ error() }}</p>
+    } @else if (tickets().length === 0) {
+      <p class="tickets-msg">Nie masz jeszcze żadnych biletów.</p>
+    } @else {
+      <ul class="tickets-list" role="list">
+        @for (t of tickets(); track t.id) {
+          <li class="ticket-card">
+            <div class="ticket-card__top">
+              <span class="ticket-card__route">{{ t.fromStation.name }} → {{ t.toStation.name }}</span>
+              <span class="ticket-card__code">{{ t.ticketCode }}</span>
+            </div>
+            <div class="ticket-card__mid">
+              <div class="ticket-card__detail">
+                <span class="ticket-card__label">Odjazd</span>
+                <span class="ticket-card__value">{{ t.trip.departureTime | slice:0:16 }}</span>
+              </div>
+              <div class="ticket-card__detail">
+                <span class="ticket-card__label">Cena</span>
+                <span class="ticket-card__value">{{ t.price | number:'1.2-2' }} zł</span>
+              </div>
+              <div class="ticket-card__detail">
+                <span class="ticket-card__label">Status</span>
+                <span class="ticket-card__badge"
+                      [class.ticket-card__badge--active]="t.status === 'ACTIVE' && t.paymentStatus === 'PAID'"
+                      [class.ticket-card__badge--pending]="t.paymentStatus === 'PENDING'"
+                      [class.ticket-card__badge--cancelled]="t.status === 'CANCELLED'">
+                  {{ t.status === 'CANCELLED' ? 'Anulowany' : t.paymentStatus === 'PAID' ? 'Aktywny' : 'Oczekuje' }}
+                </span>
+              </div>
+            </div>
+            @if (t.status === 'ACTIVE' && t.paymentStatus === 'PAID') {
+              <button type="button" class="ticket-card__cancel" (click)="cancel(t)">
+                Anuluj bilet
+              </button>
+            }
+          </li>
+        }
+      </ul>
+    }
+  </div>
+</div>

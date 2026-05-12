@@ -1,0 +1,98 @@
+<main class="page">
+  <section class="hero">
+    <div class="hero__inner">
+      <header class="hero__topbar">
+        <div class="logo-group">
+          <a class="logo" href="/" aria-label="KOLEO – strona główna">
+            <svg class="logo__mark" viewBox="0 0 28 22" aria-hidden="true">
+              <path d="M5 3 L20 11 L5 19" fill="none" stroke="#3ed3c4" stroke-width="5.5" stroke-linecap="round" stroke-linejoin="round"/>
+            </svg>
+            <span class="logo__word">KOLEO</span>
+          </a>
+          <p class="logo__tagline">ROZKŁAD JAZDY PKP I BILETY</p>
+        </div>
+        <app-header-menu />
+      </header>
+
+      <h1 class="hero__title">Dokąd jedziemy?</h1>
+
+      <div class="search">
+        <div class="search-bar">
+          <app-station-input
+            placeholder="Stacja odjazdu"
+            leadingIcon="depart"
+            [showLocateButton]="true"
+            [value]="fromStation()"
+            (stationSelected)="fromStation.set($event)" />
+
+          <app-station-input
+            placeholder="Stacja przyjazdu"
+            leadingIcon="arrive"
+            trailingIcon="none"
+            [value]="toStation()"
+            (stationSelected)="toStation.set($event)">
+            <button trailing type="button" class="swap-btn"
+                    (click)="swapStations(); $event.stopPropagation()"
+                    [disabled]="!fromStation() && !toStation()">
+              <svg viewBox="0 0 24 24" aria-hidden="true">
+                <path d="M7 8h10m-3-3l3 3-3 3M17 16H7m3 3l-3-3 3-3" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/>
+              </svg>
+              <span>Zamień stacje</span>
+            </button>
+          </app-station-input>
+
+          <app-date-picker [value]="searchDate()" (valueChange)="searchDate.set($event)" />
+        </div>
+
+        <button type="button" class="search__cta" [disabled]="searching()" (click)="submit()">
+          <svg viewBox="0 0 24 24" width="20" height="20" aria-hidden="true">
+            <circle cx="11" cy="11" r="6" fill="none" stroke="currentColor" stroke-width="2"/>
+            <path d="M16 16l4 4" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+          </svg>
+          <span>{{ searching() ? 'Szukam…' : 'Znajdź połączenie' }}</span>
+        </button>
+      </div>
+
+      @if (searchError()) {
+        <p class="search__error">{{ searchError() }}</p>
+      }
+
+      @if (results().length > 0) {
+        <ul class="results" role="list">
+          @for (t of results(); track t.id) {
+            <li class="results__item">
+              <span class="results__time">{{ t.departureTime | slice:11:16 }} – {{ t.arrivalTime | slice:11:16 }}</span>
+              <span class="results__route">{{ t.routeName }}</span>
+              <span class="results__train">{{ t.train.type }} {{ t.train.number }}</span>
+              <span class="results__seats">{{ t.availableSeats }} miejsc</span>
+              <button type="button" class="results__buy" (click)="goBook(t.id)">Kup</button>
+            </li>
+          }
+        </ul>
+      } @else if (searched() && !searching() && !searchError()) {
+        <p class="search__empty">Brak połączeń dla wybranych kryteriów.</p>
+      }
+    </div>
+  </section>
+
+  <section class="operators">
+    <div class="operators__inner">
+      <h2 class="operators__title">Wszystkie bilety w jednym miejscu</h2>
+      <ul class="operators__grid" role="list">
+        <li class="op op--pkp">PKP <span>INTERCITY</span></li>
+        <li class="op op--polregio">PolREGIO</li>
+        <li class="op op--flixbus">FLIXBUS</li>
+        <li class="op op--arriva">arriva</li>
+        <li class="op op--kw">Koleje<br/>Wielkopolskie</li>
+        <li class="op op--kd">Koleje Dolnośląskie</li>
+        <li class="op op--ksl">Koleje Śląskie</li>
+        <li class="op op--km">Koleje<br/>Mazowieckie</li>
+        <li class="op op--kmal">Koleje<br/>Małopolskie</li>
+        <li class="op op--skm">SKM</li>
+        <li class="op op--lka">ŁKA</li>
+        <li class="op op--leo">Leo Express</li>
+        <li class="op op--regiojet"><span class="rj-bars">||</span>REGIOJET</li>
+      </ul>
+    </div>
+  </section>
+</main>
