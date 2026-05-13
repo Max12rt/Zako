@@ -1,0 +1,556 @@
+<!doctype html>
+<html lang="pl">
+<head>
+<meta charset="utf-8" />
+<title>Zako — Architektura</title>
+<style>
+  @page { size: A4; margin: 18mm 15mm; }
+  body { font-family: "Segoe UI", Arial, sans-serif; color: #1a1a1a; line-height: 1.45; font-size: 11pt; }
+  h1 { font-size: 22pt; margin: 0 0 4mm; border-bottom: 2px solid #3ed3c4; padding-bottom: 2mm; }
+  h2 { font-size: 16pt; margin: 8mm 0 3mm; color: #0d3b46; page-break-after: avoid; }
+  h3 { font-size: 13pt; margin: 5mm 0 2mm; color: #144f5c; page-break-after: avoid; }
+  p { margin: 1.5mm 0; }
+  code, pre { font-family: "JetBrains Mono", Consolas, monospace; font-size: 9.5pt; }
+  table { border-collapse: collapse; width: 100%; font-size: 10pt; margin: 3mm 0; }
+  th, td { border: 1px solid #ddd; padding: 4px 8px; text-align: left; vertical-align: top; }
+  th { background: #eaf6f4; }
+  em { color: #555; }
+  .mermaid { margin: 4mm 0; text-align: center; page-break-inside: avoid; }
+  .meta { color: #666; font-size: 9.5pt; margin-bottom: 6mm; }
+  .pagebreak { page-break-before: always; }
+</style>
+</head>
+<body>
+
+<h1>Zako — Architektura porównawcza: Monolit vs Mikroserwisy</h1>
+<p class="meta">Dokument zawiera komplet diagramów obu wariantów wdrożenia aplikacji <strong>Zako</strong> (rezerwacja biletów kolejowych): wersji monolitycznej (Spring Boot na pojedynczej bazie Postgres) oraz wersji mikroserwisowej (auth + trip + ticket + Kafka).</p>
+
+<h2>1. Kontekst systemu</h2>
+<div class="mermaid">
+flowchart LR
+    subgraph User["Uzytkownik koncowy"]
+        Browser["Przegladarka<br/>(Angular SPA)"]
+    end
+    subgraph Mono["Monolit (zako)"]
+        FE1["nginx + frontend :8080"]
+        BE1["Spring Boot :9090"]
+        DB1[("PostgreSQL<br/>ticket_monolith_db")]
+        FE1 --> BE1
+        BE1 --> DB1
+    end
+    subgraph MS["Mikroserwisy (zako-ms)"]
+        FE2["nginx + frontend :8090"]
+        AUTH["auth-service :8081"]
+        TRIP["trip-service :8082"]
+        TICK["ticket-service :8083"]
+        KAFKA[("Kafka :9092")]
+        DBA[("auth_db")]
+        DBT[("trip_db")]
+        DBK[("ticket_db")]
+        FE2 --> AUTH
+        FE2 --> TRIP
+        FE2 --> TICK
+        AUTH --> DBA
+        TRIP --> DBT
+        TICK --> DBK
+        TICK -->|REST| TRIP
+        TICK -.publish.-> KAFKA
+        KAFKA -.consume.-> TRIP
+    end
+    Browser ===> FE1
+    Browser ===> FE2
+</div>
+
+<h2 class="pagebreak">2. Monolit — diagram kontenerow</h2>
+<div class="mermaid">
+flowchart TB
+    subgraph Compose["docker-compose / k8s namespace: zako"]
+        FE["frontend<br/>nginx :8080<br/>(Angular dist + reverse proxy /api/)"]
+        BE["monolith<br/>Spring Boot :9090<br/>WebMVC + Security + JPA"]
+        DB[("PostgreSQL :5432<br/>ticket_monolith_db")]
+        FE -- "HTTP /api/*" --> BE
+        BE -- "JDBC" --> DB
+    end
+    Browser["Przegladarka"] -->|HTTP :8080| FE
+</div>
+
+<h3>2.1 Pakiety / komponenty monolitu</h3>
+<div class="mermaid">
+flowchart TB
+    subgraph App["zako.monolith"]
+        Auth["auth/<br/>AuthController, AuthService<br/>JwtService, JwtAuthFilter"]
+        Users["user/<br/>UserController, UserService<br/>UserRepository, User"]
+        Tickets["ticket/<br/>TicketController, TicketService<br/>TicketRepository, Ticket"]
+        Trips["trip/<br/>TripController, TripService<br/>TripRepository, Trip"]
+        Stations["station/<br/>StationController, StationService<br/>Station, Route, RouteStop"]
+        Trains["train/<br/>TrainController, TrainService<br/>Train"]
+        Config["config/<br/>SecurityConfig, CorsConfig"]
+        Seeder["seeder/<br/>StationSeeder, DemoDataSeeder"]
+        Obs["observability/<br/>metrics, tracing, logging"]
+        Auth --> Users
+        Tickets --> Trips
+        Tickets --> Users
+        Tickets --> Stations
+        Trips --> Trains
+        Trips --> Stations
+    end
+</div>
+
+<h3>2.2 Model danych monolitu — ER</h3>
+<div class="mermaid">
+erDiagram
+    USERS ||--o{ TICKETS : "buys"
+    TRIPS ||--o{ TICKETS : "for"
+    TRAINS ||--o{ TRIPS : "operates"
+    ROUTES ||--o{ TRIPS : "follows"
+    ROUTES ||--o{ ROUTE_STOPS : "has"
+    STATIONS ||--o{ ROUTE_STOPS : "is_stop"
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar password_hash
+        varchar first_name
+        varchar last_name
+        varchar role
+        timestamp created_at
+    }
+    STATIONS {
+        bigint id PK
+        varchar name UK
+        varchar city
+        varchar code UK
+        double latitude
+        double longitude
+    }
+    TRAINS {
+        bigint id PK
+        varchar train_number UK
+        varchar type
+        int total_seats
+    }
+    ROUTES {
+        bigint id PK
+        varchar name
+    }
+    ROUTE_STOPS {
+        bigint id PK
+        bigint route_id FK
+        bigint station_id FK
+        int stop_order
+        int minutes_from_start
+    }
+    TRIPS {
+        bigint id PK
+        bigint train_id FK
+        bigint route_id FK
+        timestamp departure_time
+        timestamp arrival_time
+        varchar status
+        int available_seats
+    }
+    TICKETS {
+        bigint id PK
+        bigint user_id FK
+        bigint trip_id FK
+        bigint from_station_id FK
+        bigint to_station_id FK
+        int seat_number
+        numeric price
+        varchar status
+        varchar payment_status
+        varchar ticket_code UK
+        timestamp purchased_at
+    }
+</div>
+
+<h2 class="pagebreak">3. Mikroserwisy — diagram kontenerow</h2>
+<div class="mermaid">
+flowchart LR
+    Browser["Przegladarka"] --> FE
+    FE["frontend nginx :8090"]
+    subgraph Auth_Stack["auth domain"]
+        AUTH["auth-service :8081"]
+        DBA[("postgres-auth<br/>auth_db :5433")]
+        AUTH --> DBA
+    end
+    subgraph Trip_Stack["trip/catalog domain"]
+        TRIP["trip-service :8082<br/>Kafka consumer"]
+        DBT[("postgres-trip<br/>trip_db :5434")]
+        TRIP --> DBT
+    end
+    subgraph Ticket_Stack["ticket domain"]
+        TICK["ticket-service :8083<br/>Kafka producer"]
+        DBK[("postgres-ticket<br/>ticket_db :5435")]
+        TICK --> DBK
+    end
+    KAFKA[("Apache Kafka KRaft :9092<br/>topics: ticket.purchased, ticket.cancelled")]
+    FE -->|/api/auth, /api/users| AUTH
+    FE -->|/api/stations, /api/trips, /api/trains| TRIP
+    FE -->|/api/tickets| TICK
+    TICK -->|REST sync| TRIP
+    TICK -->|publish| KAFKA
+    KAFKA -->|consume| TRIP
+</div>
+
+<h3>3.1 Pakiety / komponenty mikroserwisow</h3>
+<div class="mermaid">
+flowchart TB
+    subgraph AUTH["auth-service · zako.auth"]
+        AuthC["auth/<br/>AuthController, AuthService"]
+        UserC["user/<br/>UserController, UserService<br/>User, UserRepository"]
+        AuthCfg["config/<br/>SecurityConfig, JwtService, JwtAuthFilter"]
+        AuthC --> UserC
+    end
+    subgraph TRIP["trip-service · zako.trip"]
+        StationC["station/<br/>StationController, StationService<br/>Station, Repository"]
+        TrainC["train/<br/>TrainController, TrainService"]
+        TripC["trip/<br/>TripController, TripService"]
+        RouteC["route/<br/>Route, RouteStop, Repository"]
+        KafkaC["kafka/<br/>TicketEventConsumer, TicketEvent"]
+        TripCfg["config/<br/>SecurityConfig, JwtService"]
+        SeedT["seeder/<br/>StationSeeder, DemoDataSeeder"]
+        TripC --> TrainC
+        TripC --> RouteC
+        RouteC --> StationC
+        KafkaC --> TripC
+    end
+    subgraph TICK["ticket-service · zako.ticket"]
+        TickC["ticket/<br/>TicketController, TicketService<br/>Ticket, Repository"]
+        Client["client/<br/>TripServiceClient (RestClient)"]
+        KafkaP["kafka/<br/>TicketEventProducer, KafkaProducerConfig"]
+        TickCfg["config/<br/>SecurityConfig, JwtService"]
+        TickC --> Client
+        TickC --> KafkaP
+    end
+    Client -.HTTP.-> TRIP
+    KafkaP -.publish.-> KafkaC
+</div>
+
+<h3 class="pagebreak">3.2 ER auth_db</h3>
+<div class="mermaid">
+erDiagram
+    USERS {
+        bigint id PK
+        varchar email UK
+        varchar password_hash
+        varchar first_name
+        varchar last_name
+        varchar role
+        timestamp created_at
+    }
+</div>
+
+<h3>3.3 ER trip_db</h3>
+<div class="mermaid">
+erDiagram
+    TRAINS ||--o{ TRIPS : "operates"
+    ROUTES ||--o{ TRIPS : "follows"
+    ROUTES ||--o{ ROUTE_STOPS : "has"
+    STATIONS ||--o{ ROUTE_STOPS : "is_stop"
+    STATIONS {
+        bigint id PK
+        varchar name UK
+        varchar city
+        varchar code UK
+        double latitude
+        double longitude
+    }
+    TRAINS {
+        bigint id PK
+        varchar train_number UK
+        varchar type
+        int total_seats
+    }
+    ROUTES {
+        bigint id PK
+        varchar name
+    }
+    ROUTE_STOPS {
+        bigint id PK
+        bigint route_id FK
+        bigint station_id FK
+        int stop_order
+        int minutes_from_start
+    }
+    TRIPS {
+        bigint id PK
+        bigint train_id FK
+        bigint route_id FK
+        timestamp departure_time
+        timestamp arrival_time
+        varchar status
+        int available_seats
+    }
+</div>
+
+<h3>3.4 ER ticket_db</h3>
+<div class="mermaid">
+erDiagram
+    TICKETS {
+        bigint id PK
+        bigint user_id "no FK"
+        bigint trip_id "no FK"
+        bigint from_station_id "no FK"
+        varchar from_station_name "denorm"
+        varchar from_station_city "denorm"
+        varchar from_station_code "denorm"
+        bigint to_station_id "no FK"
+        varchar to_station_name "denorm"
+        varchar to_station_city "denorm"
+        varchar to_station_code "denorm"
+        int seat_number
+        timestamp departure_time "denorm V2"
+        timestamp arrival_time "denorm V2"
+        numeric price
+        varchar status
+        varchar payment_status
+        varchar ticket_code UK
+        timestamp purchased_at
+    }
+</div>
+<p><em>Pojedyncza tabela <code>tickets</code>; obce identyfikatory wylacznie jako liczby, dane z innych domen denormalizowane w momencie zakupu.</em></p>
+
+<h2 class="pagebreak">4. Sekwencja — rejestracja</h2>
+
+<h3>4.1 Monolit</h3>
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as Uzytkownik
+    participant N as nginx :8080
+    participant M as Monolith :9090
+    participant DB as ticket_monolith_db
+    U->>N: POST /api/users/register
+    N->>M: proxy_pass
+    M->>M: validate, BCrypt
+    M->>DB: INSERT INTO users
+    DB-->>M: id
+    M-->>N: 201 UserResponse
+    N-->>U: 201
+</div>
+
+<h3>4.2 Mikroserwisy</h3>
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as Uzytkownik
+    participant N as nginx :8090
+    participant A as auth-service :8081
+    participant DBA as auth_db
+    U->>N: POST /api/users/register
+    N->>A: proxy_pass
+    A->>A: validate, BCrypt
+    A->>DBA: INSERT INTO users
+    DBA-->>A: id
+    A-->>N: 201
+    N-->>U: 201
+</div>
+
+<h2 class="pagebreak">5. Sekwencja — zakup biletu</h2>
+
+<h3>5.1 Monolit (jedna transakcja)</h3>
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as Uzytkownik
+    participant M as Monolith :9090
+    participant DB as ticket_monolith_db
+    U->>M: POST /api/tickets/purchase Bearer JWT
+    M->>M: JwtAuthFilter, load User
+    Note over M,DB: BEGIN
+    M->>DB: SELECT trip WHERE id
+    M->>DB: SELECT from_station, to_station
+    M->>M: check availableSeats > 0
+    M->>DB: UPDATE trips SET available_seats = available_seats - 1
+    M->>DB: INSERT INTO tickets
+    Note over M,DB: COMMIT
+    M-->>U: 201 TicketResponse
+</div>
+
+<h3>5.2 Mikroserwisy (REST + Kafka, eventual consistency)</h3>
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as Uzytkownik
+    participant T as ticket-service
+    participant TS as trip-service
+    participant DBK as ticket_db
+    participant K as Kafka
+    participant DBT as trip_db
+    U->>T: POST /api/tickets/purchase Bearer JWT
+    T->>T: JwtAuthFilter, userId z claim
+    T->>TS: GET /api/trips/id
+    TS-->>T: TripDto
+    T->>T: check availableSeats > 0
+    T->>TS: GET /api/stations/from and /to
+    TS-->>T: StationDto x2
+    T->>DBK: INSERT INTO tickets
+    DBK-->>T: ticket.id
+    T->>K: publish ticket.purchased
+    T-->>U: 201 TicketResponse
+    Note over K,DBT: asynchronicznie
+    K->>TS: consume ticket.purchased
+    TS->>DBT: UPDATE trips SET available_seats = available_seats - 1
+</div>
+
+<h3>5.3 Anulowanie biletu (mikroserwisy)</h3>
+<div class="mermaid">
+sequenceDiagram
+    autonumber
+    participant U as Uzytkownik
+    participant T as ticket-service
+    participant DBK as ticket_db
+    participant K as Kafka
+    participant TS as trip-service
+    participant DBT as trip_db
+    U->>T: POST /api/tickets/id/cancel
+    T->>DBK: SELECT ticket
+    T->>T: assert owner and ACTIVE
+    T->>DBK: UPDATE status=CANCELLED
+    T->>K: publish ticket.cancelled
+    T-->>U: 200
+    K->>TS: consume ticket.cancelled
+    TS->>DBT: UPDATE trips SET available_seats = available_seats + 1
+</div>
+
+<h2 class="pagebreak">6. Wdrozenie — docker-compose</h2>
+
+<h3>6.1 Monolit</h3>
+<div class="mermaid">
+flowchart LR
+    subgraph Net["siec zako_default"]
+        FE["zako-frontend :8080 -> :80"]
+        BE["zako-monolith :9090"]
+        PG["zako-postgres :5432<br/>volume postgres-data"]
+        FE -->|proxy /api/| BE
+        BE -->|JDBC| PG
+    end
+</div>
+
+<h3>6.2 Mikroserwisy</h3>
+<div class="mermaid">
+flowchart TB
+    subgraph Net["siec microservices_default"]
+        FE["zako-ms-frontend :8090 -> :80"]
+        AU["zako-ms-auth :8081"]
+        TR["zako-ms-trip :8082"]
+        TI["zako-ms-ticket :8083"]
+        K["zako-ms-kafka :9092"]
+        PA["zako-ms-postgres-auth :5433 -> :5432"]
+        PT["zako-ms-postgres-trip :5434 -> :5432"]
+        PK["zako-ms-postgres-ticket :5435 -> :5432"]
+        FE --> AU
+        FE --> TR
+        FE --> TI
+        AU --> PA
+        TR --> PT
+        TI --> PK
+        TI -.REST.-> TR
+        TI -.produce.-> K
+        K -.consume.-> TR
+    end
+</div>
+
+<h2 class="pagebreak">7. Wdrozenie — Kubernetes</h2>
+
+<h3>7.1 Namespace zako (monolit)</h3>
+<div class="mermaid">
+flowchart TB
+    subgraph NS["namespace: zako"]
+        ING["Ingress zako<br/>host: zako.localhost"]
+        SVC_FE["Service frontend :80"]
+        SVC_BE["Service monolith :9090"]
+        SVC_PG["Service postgres :5432 headless"]
+        DEP_FE["Deployment frontend replicas:2"]
+        DEP_BE["Deployment monolith<br/>HPA 1-5 CPU 60 MEM 75"]
+        STS_PG["StatefulSet postgres PVC 2Gi"]
+        CM["ConfigMap monolith-config"]
+        SEC1["Secret postgres-secret"]
+        SEC2["Secret app-secret (JWT)"]
+        ING --> SVC_FE
+        ING --> SVC_BE
+        SVC_FE --> DEP_FE
+        SVC_BE --> DEP_BE
+        SVC_PG --> STS_PG
+        DEP_BE --> SVC_PG
+        DEP_BE -. envFrom .-> CM
+        DEP_BE -. env .-> SEC1
+        DEP_BE -. env .-> SEC2
+        STS_PG -. envFrom .-> SEC1
+    end
+</div>
+
+<h3>7.2 Namespace zako-ms (mikroserwisy)</h3>
+<div class="mermaid">
+flowchart TB
+    subgraph NS["namespace: zako-ms"]
+        ING["Ingress zako-ms<br/>host: zako-ms.localhost"]
+        FE_S["Service frontend"]
+        AU_S["Service auth :8081"]
+        TR_S["Service trip :8082"]
+        TI_S["Service ticket :8083"]
+        K_S["Service kafka :9092"]
+        PA_S["Service postgres-auth"]
+        PT_S["Service postgres-trip"]
+        PK_S["Service postgres-ticket"]
+        FE_D["Deployment frontend x2"]
+        AU_D["Deployment auth HPA 1-3"]
+        TR_D["Deployment trip HPA 1-5"]
+        TI_D["Deployment ticket HPA 1-5"]
+        K_STS["StatefulSet kafka PVC 2Gi"]
+        PA_STS["StatefulSet postgres-auth PVC 1Gi"]
+        PT_STS["StatefulSet postgres-trip PVC 1Gi"]
+        PK_STS["StatefulSet postgres-ticket PVC 1Gi"]
+        ING --> FE_S
+        ING --> AU_S
+        ING --> TR_S
+        ING --> TI_S
+        FE_S --> FE_D
+        AU_S --> AU_D
+        TR_S --> TR_D
+        TI_S --> TI_D
+        K_S --> K_STS
+        PA_S --> PA_STS
+        PT_S --> PT_STS
+        PK_S --> PK_STS
+        AU_D --> PA_S
+        TR_D --> PT_S
+        TI_D --> PK_S
+        TI_D --> TR_S
+        TI_D --> K_S
+        TR_D --> K_S
+    end
+</div>
+
+<h2 class="pagebreak">8. Porownanie</h2>
+<table>
+<thead><tr><th>Aspekt</th><th>Monolit</th><th>Mikroserwisy</th></tr></thead>
+<tbody>
+<tr><td>Procesy JVM</td><td>1</td><td>3 (auth + trip + ticket)</td></tr>
+<tr><td>Bazy Postgres</td><td>1 (ticket_monolith_db)</td><td>3 (auth_db, trip_db, ticket_db)</td></tr>
+<tr><td>Schemat danych</td><td>Wspolny, FK miedzy tabelami</td><td>Rozdzielony, brak FK miedzy bazami</td></tr>
+<tr><td>Komunikacja modulow</td><td>wywolania w obrebie JVM (@Service)</td><td>REST sync (ticket -> trip) + Kafka async</td></tr>
+<tr><td>Transakcyjnosc</td><td>Lokalna @Transactional obejmuje wszystkie domeny</td><td>Lokalna w obrebie serwisu; spojnosc seatow: eventual consistency przez Kafke</td></tr>
+<tr><td>Autoryzacja</td><td>Ten sam SecurityFilterChain dla /api/*</td><td>Kazdy serwis ma wlasny JwtAuthFilter z tym samym sekretem</td></tr>
+<tr><td>Wdrozenie (k8s)</td><td>1 Deployment + 1 StatefulSet</td><td>3 Deployment + 4 StatefulSet (3xPostgres + Kafka)</td></tr>
+<tr><td>Skalowanie</td><td>HPA jednego Deploymentu</td><td>HPA na kazdy serwis (trip 1-5, ticket 1-5, auth 1-3)</td></tr>
+<tr><td>Awaria</td><td>Awaria procesu = brak calej funkcjonalnosci</td><td>Awaria ticket-service nie blokuje logowania i przegladania</td></tr>
+<tr><td>Czas startu</td><td>~14 s</td><td>3 x ~25-30 s + Kafka</td></tr>
+</tbody>
+</table>
+
+<h2>9. Wybrane decyzje projektowe</h2>
+<ol>
+<li><strong>Denormalizacja stacji + czasow w tickets</strong> (mikroserwisy). Bilet po sprzedazy nie zalezy od pozniejszych zmian w trip_db.</li>
+<li><strong>Identyfikatory bez FK</strong> miedzy bazami. Ticket trzyma user_id, trip_id, station_id jako liczby; weryfikacja przez REST przy zakupie.</li>
+<li><strong>Kafka KRaft single-node</strong> zamiast klastra z ZooKeeperem — wystarczajace dla demo.</li>
+<li><strong>CORS</strong> — monolit uzywal setAllowedOrigins("http://localhost:4200"); zmienione na setAllowedOriginPatterns dla localhost:* i ingress hostow.</li>
+<li><strong>spring-boot-flyway starter</strong> w ticket-service — flyway-core sam z siebie nie aktywuje autoconfig w Spring Boot 4.0, migracja V1 byla pomijana.</li>
+</ol>
+
+<script src="https://cdn.jsdelivr.net/npm/mermaid@10/dist/mermaid.min.js"></script>
+<script>
+  mermaid.initialize({ startOnLoad: true, securityLevel: 'loose', theme: 'default' });
+</script>
+</body>
+</html>
