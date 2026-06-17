@@ -13,10 +13,12 @@ public class TicketEventProducer {
 
     public void publishPurchased(Ticket t) {
         kafkaTemplate.send(TOPIC_PURCHASED,
-            new TicketEvent(TOPIC_PURCHASED, t.getId(), t.getTripId(), 1));
+            new TicketEvent(TOPIC_PURCHASED, t.getId(), t.getUserId(), t.getTripId(), 1,
+                t.getTicketCode(), t.getFromStationCity(), t.getToStationCity()));
     }
     public void publishCancelled(Ticket t) {
         kafkaTemplate.send(TOPIC_CANCELLED,
-            new TicketEvent(TOPIC_CANCELLED, t.getId(), t.getTripId(), 1));
+            new TicketEvent(TOPIC_CANCELLED, t.getId(), t.getUserId(), t.getTripId(), 1,
+                t.getTicketCode(), t.getFromStationCity(), t.getToStationCity()));
     }
 }

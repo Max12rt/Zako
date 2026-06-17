@@ -6,14 +6,14 @@ COPY auth-service/pom.xml auth-service/pom.xml
 COPY trip-service/pom.xml trip-service/pom.xml
 COPY ticket-service/pom.xml ticket-service/pom.xml
 COPY notification-service/pom.xml notification-service/pom.xml
-RUN mvn -B -q -pl trip-service -am dependency:go-offline
-COPY trip-service/src trip-service/src
-RUN mvn -B -q -pl trip-service -DskipTests package
+RUN mvn -B -q -pl notification-service -am dependency:go-offline
+COPY notification-service/src notification-service/src
+RUN mvn -B -q -pl notification-service -DskipTests package
 
 FROM eclipse-temurin:21-jre-alpine
 WORKDIR /app
 RUN addgroup -S app && adduser -S app -G app
-COPY --from=build /workspace/trip-service/target/*.jar app.jar
+COPY --from=build /workspace/notification-service/target/*.jar app.jar
 USER app
-EXPOSE 8082
+EXPOSE 8084
 ENTRYPOINT ["sh", "-c", "exec java $JAVA_OPTS -jar /app/app.jar"]
