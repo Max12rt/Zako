@@ -1,0 +1,414 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: k6/ddos-test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 300 max VUs, 2m30s max duration (incl. graceful stop):
+              * ddos: 200.00 iterations/s for 2m0s (maxVUs: 100-300, gracefulStop: 30s)
+
+
+running (0m01.0s), 149/149 VUs, 0 complete and 0 interrupted iterations
+ddos   [   1% ] 149/149 VUs  0m01.0s/2m0s  200.00 iters/s
+
+running (0m02.0s), 246/246 VUs, 3 complete and 0 interrupted iterations
+ddos   [   2% ] 246/246 VUs  0m02.0s/2m0s  200.00 iters/s
+time="2026-06-17T11:37:35+02:00" level=warning msg="Insufficient VUs, reached 300 active VUs and cannot initialize more" executor=constant-arrival-rate scenario=ddos
+
+running (0m03.0s), 300/300 VUs, 35 complete and 0 interrupted iterations
+ddos   [   2% ] 300/300 VUs  0m03.0s/2m0s  200.00 iters/s
+
+running (0m04.0s), 300/300 VUs, 100 complete and 0 interrupted iterations
+ddos   [   3% ] 300/300 VUs  0m04.0s/2m0s  200.00 iters/s
+
+running (0m05.0s), 300/300 VUs, 162 complete and 0 interrupted iterations
+ddos   [   4% ] 300/300 VUs  0m05.0s/2m0s  200.00 iters/s
+
+running (0m06.0s), 300/300 VUs, 258 complete and 0 interrupted iterations
+ddos   [   5% ] 300/300 VUs  0m06.0s/2m0s  200.00 iters/s
+
+running (0m07.0s), 300/300 VUs, 371 complete and 0 interrupted iterations
+ddos   [   6% ] 300/300 VUs  0m07.0s/2m0s  200.00 iters/s
+
+running (0m08.0s), 300/300 VUs, 477 complete and 0 interrupted iterations
+ddos   [   7% ] 300/300 VUs  0m08.0s/2m0s  200.00 iters/s
+
+running (0m09.0s), 300/300 VUs, 528 complete and 0 interrupted iterations
+ddos   [   7% ] 300/300 VUs  0m09.0s/2m0s  200.00 iters/s
+
+running (0m10.0s), 300/300 VUs, 556 complete and 0 interrupted iterations
+ddos   [   8% ] 300/300 VUs  0m10.0s/2m0s  200.00 iters/s
+
+running (0m11.0s), 300/300 VUs, 636 complete and 0 interrupted iterations
+ddos   [   9% ] 300/300 VUs  0m11.0s/2m0s  200.00 iters/s
+
+running (0m12.0s), 300/300 VUs, 755 complete and 0 interrupted iterations
+ddos   [  10% ] 300/300 VUs  0m12.0s/2m0s  200.00 iters/s
+
+running (0m13.0s), 298/300 VUs, 891 complete and 0 interrupted iterations
+ddos   [  11% ] 298/300 VUs  0m13.0s/2m0s  200.00 iters/s
+
+running (0m14.0s), 298/300 VUs, 1025 complete and 0 interrupted iterations
+ddos   [  12% ] 298/300 VUs  0m14.0s/2m0s  200.00 iters/s
+
+running (0m15.0s), 296/300 VUs, 1171 complete and 0 interrupted iterations
+ddos   [  12% ] 296/300 VUs  0m15.0s/2m0s  200.00 iters/s
+
+running (0m16.0s), 296/300 VUs, 1331 complete and 0 interrupted iterations
+ddos   [  13% ] 296/300 VUs  0m16.0s/2m0s  200.00 iters/s
+
+running (0m17.0s), 299/300 VUs, 1518 complete and 0 interrupted iterations
+ddos   [  14% ] 299/300 VUs  0m17.0s/2m0s  200.00 iters/s
+
+running (0m18.0s), 300/300 VUs, 1682 complete and 0 interrupted iterations
+ddos   [  15% ] 300/300 VUs  0m18.0s/2m0s  200.00 iters/s
+
+running (0m19.0s), 285/300 VUs, 1850 complete and 0 interrupted iterations
+ddos   [  16% ] 285/300 VUs  0m19.0s/2m0s  200.00 iters/s
+
+running (0m20.0s), 300/300 VUs, 2034 complete and 0 interrupted iterations
+ddos   [  17% ] 300/300 VUs  0m20.0s/2m0s  200.00 iters/s
+
+running (0m21.0s), 297/300 VUs, 2137 complete and 0 interrupted iterations
+ddos   [  17% ] 297/300 VUs  0m21.0s/2m0s  200.00 iters/s
+
+running (0m22.0s), 298/300 VUs, 2310 complete and 0 interrupted iterations
+ddos   [  18% ] 298/300 VUs  0m22.0s/2m0s  200.00 iters/s
+
+running (0m23.0s), 294/300 VUs, 2502 complete and 0 interrupted iterations
+ddos   [  19% ] 294/300 VUs  0m23.0s/2m0s  200.00 iters/s
+
+running (0m24.0s), 273/300 VUs, 2723 complete and 0 interrupted iterations
+ddos   [  20% ] 273/300 VUs  0m24.0s/2m0s  200.00 iters/s
+
+running (0m25.0s), 300/300 VUs, 2870 complete and 0 interrupted iterations
+ddos   [  21% ] 300/300 VUs  0m25.0s/2m0s  200.00 iters/s
+
+running (0m26.0s), 296/300 VUs, 2982 complete and 0 interrupted iterations
+ddos   [  22% ] 296/300 VUs  0m26.0s/2m0s  200.00 iters/s
+
+running (0m27.0s), 300/300 VUs, 3155 complete and 0 interrupted iterations
+ddos   [  22% ] 300/300 VUs  0m27.0s/2m0s  200.00 iters/s
+
+running (0m28.0s), 300/300 VUs, 3339 complete and 0 interrupted iterations
+ddos   [  23% ] 300/300 VUs  0m28.0s/2m0s  200.00 iters/s
+
+running (0m29.0s), 287/300 VUs, 3508 complete and 0 interrupted iterations
+ddos   [  24% ] 287/300 VUs  0m29.0s/2m0s  200.00 iters/s
+
+running (0m30.0s), 297/300 VUs, 3698 complete and 0 interrupted iterations
+ddos   [  25% ] 297/300 VUs  0m30.0s/2m0s  200.00 iters/s
+
+running (0m31.0s), 300/300 VUs, 3799 complete and 0 interrupted iterations
+ddos   [  26% ] 300/300 VUs  0m31.0s/2m0s  200.00 iters/s
+
+running (0m32.0s), 300/300 VUs, 3980 complete and 0 interrupted iterations
+ddos   [  27% ] 300/300 VUs  0m32.0s/2m0s  200.00 iters/s
+
+running (0m33.0s), 208/300 VUs, 4254 complete and 0 interrupted iterations
+ddos   [  27% ] 208/300 VUs  0m33.0s/2m0s  200.00 iters/s
+
+running (0m34.0s), 150/300 VUs, 4512 complete and 0 interrupted iterations
+ddos   [  28% ] 150/300 VUs  0m34.0s/2m0s  200.00 iters/s
+
+running (0m35.0s), 135/300 VUs, 4727 complete and 0 interrupted iterations
+ddos   [  29% ] 135/300 VUs  0m35.0s/2m0s  200.00 iters/s
+
+running (0m36.0s), 115/300 VUs, 4947 complete and 0 interrupted iterations
+ddos   [  30% ] 115/300 VUs  0m36.0s/2m0s  200.00 iters/s
+
+running (0m37.0s), 128/300 VUs, 5134 complete and 0 interrupted iterations
+ddos   [  31% ] 128/300 VUs  0m37.0s/2m0s  200.00 iters/s
+
+running (0m38.0s), 125/300 VUs, 5337 complete and 0 interrupted iterations
+ddos   [  32% ] 125/300 VUs  0m38.0s/2m0s  200.00 iters/s
+
+running (0m39.0s), 144/300 VUs, 5518 complete and 0 interrupted iterations
+ddos   [  32% ] 144/300 VUs  0m39.0s/2m0s  200.00 iters/s
+
+running (0m40.0s), 125/300 VUs, 5737 complete and 0 interrupted iterations
+ddos   [  33% ] 125/300 VUs  0m40.0s/2m0s  200.00 iters/s
+
+running (0m41.0s), 153/300 VUs, 5909 complete and 0 interrupted iterations
+ddos   [  34% ] 153/300 VUs  0m41.0s/2m0s  200.00 iters/s
+
+running (0m42.0s), 051/300 VUs, 6211 complete and 0 interrupted iterations
+ddos   [  35% ] 051/300 VUs  0m42.0s/2m0s  200.00 iters/s
+
+running (0m43.0s), 001/300 VUs, 6461 complete and 0 interrupted iterations
+ddos   [  36% ] 001/300 VUs  0m43.0s/2m0s  200.00 iters/s
+
+running (0m44.0s), 004/300 VUs, 6658 complete and 0 interrupted iterations
+ddos   [  37% ] 004/300 VUs  0m44.0s/2m0s  200.00 iters/s
+
+running (0m45.0s), 001/300 VUs, 6861 complete and 0 interrupted iterations
+ddos   [  37% ] 001/300 VUs  0m45.0s/2m0s  200.00 iters/s
+
+running (0m46.0s), 026/300 VUs, 7036 complete and 0 interrupted iterations
+ddos   [  38% ] 026/300 VUs  0m46.0s/2m0s  200.00 iters/s
+
+running (0m47.0s), 002/300 VUs, 7260 complete and 0 interrupted iterations
+ddos   [  39% ] 002/300 VUs  0m47.0s/2m0s  200.00 iters/s
+
+running (0m48.0s), 004/300 VUs, 7458 complete and 0 interrupted iterations
+ddos   [  40% ] 004/300 VUs  0m48.0s/2m0s  200.00 iters/s
+
+running (0m49.0s), 010/300 VUs, 7652 complete and 0 interrupted iterations
+ddos   [  41% ] 010/300 VUs  0m49.0s/2m0s  200.00 iters/s
+
+running (0m50.0s), 001/300 VUs, 7861 complete and 0 interrupted iterations
+ddos   [  42% ] 001/300 VUs  0m50.0s/2m0s  200.00 iters/s
+
+running (0m51.0s), 069/300 VUs, 7993 complete and 0 interrupted iterations
+ddos   [  42% ] 069/300 VUs  0m51.0s/2m0s  200.00 iters/s
+
+running (0m52.0s), 014/300 VUs, 8248 complete and 0 interrupted iterations
+ddos   [  43% ] 014/300 VUs  0m52.0s/2m0s  200.00 iters/s
+
+running (0m53.0s), 001/300 VUs, 8461 complete and 0 interrupted iterations
+ddos   [  44% ] 001/300 VUs  0m53.0s/2m0s  200.00 iters/s
+
+running (0m54.0s), 001/300 VUs, 8661 complete and 0 interrupted iterations
+ddos   [  45% ] 001/300 VUs  0m54.0s/2m0s  200.00 iters/s
+
+running (0m55.0s), 003/300 VUs, 8860 complete and 0 interrupted iterations
+ddos   [  46% ] 003/300 VUs  0m55.0s/2m0s  200.00 iters/s
+
+running (0m56.0s), 001/300 VUs, 9061 complete and 0 interrupted iterations
+ddos   [  47% ] 001/300 VUs  0m56.0s/2m0s  200.00 iters/s
+
+running (0m57.0s), 001/300 VUs, 9261 complete and 0 interrupted iterations
+ddos   [  47% ] 001/300 VUs  0m57.0s/2m0s  200.00 iters/s
+
+running (0m58.0s), 001/300 VUs, 9461 complete and 0 interrupted iterations
+ddos   [  48% ] 001/300 VUs  0m58.0s/2m0s  200.00 iters/s
+
+running (0m59.0s), 014/300 VUs, 9648 complete and 0 interrupted iterations
+ddos   [  49% ] 014/300 VUs  0m59.0s/2m0s  200.00 iters/s
+
+running (1m00.0s), 050/300 VUs, 9812 complete and 0 interrupted iterations
+ddos   [  50% ] 050/300 VUs  1m00.0s/2m0s  200.00 iters/s
+
+running (1m01.0s), 038/300 VUs, 10024 complete and 0 interrupted iterations
+ddos   [  51% ] 038/300 VUs  1m01.0s/2m0s  200.00 iters/s
+
+running (1m02.0s), 017/300 VUs, 10245 complete and 0 interrupted iterations
+ddos   [  52% ] 017/300 VUs  1m02.0s/2m0s  200.00 iters/s
+
+running (1m03.0s), 002/300 VUs, 10460 complete and 0 interrupted iterations
+ddos   [  52% ] 002/300 VUs  1m03.0s/2m0s  200.00 iters/s
+
+running (1m04.0s), 001/300 VUs, 10661 complete and 0 interrupted iterations
+ddos   [  53% ] 001/300 VUs  1m04.0s/2m0s  200.00 iters/s
+
+running (1m05.0s), 001/300 VUs, 10861 complete and 0 interrupted iterations
+ddos   [  54% ] 001/300 VUs  1m05.0s/2m0s  200.00 iters/s
+
+running (1m06.0s), 001/300 VUs, 11061 complete and 0 interrupted iterations
+ddos   [  55% ] 001/300 VUs  1m06.0s/2m0s  200.00 iters/s
+
+running (1m07.0s), 001/300 VUs, 11261 complete and 0 interrupted iterations
+ddos   [  56% ] 001/300 VUs  1m07.0s/2m0s  200.00 iters/s
+
+running (1m08.0s), 001/300 VUs, 11461 complete and 0 interrupted iterations
+ddos   [  57% ] 001/300 VUs  1m08.0s/2m0s  200.00 iters/s
+
+running (1m09.0s), 101/300 VUs, 11561 complete and 0 interrupted iterations
+ddos   [  57% ] 101/300 VUs  1m09.0s/2m0s  200.00 iters/s
+
+running (1m10.0s), 158/300 VUs, 11704 complete and 0 interrupted iterations
+ddos   [  58% ] 158/300 VUs  1m10.0s/2m0s  200.00 iters/s
+
+running (1m11.0s), 079/300 VUs, 11983 complete and 0 interrupted iterations
+ddos   [  59% ] 079/300 VUs  1m11.0s/2m0s  200.00 iters/s
+
+running (1m12.0s), 114/300 VUs, 12148 complete and 0 interrupted iterations
+ddos   [  60% ] 114/300 VUs  1m12.0s/2m0s  200.00 iters/s
+
+running (1m13.0s), 101/300 VUs, 12361 complete and 0 interrupted iterations
+ddos   [  61% ] 101/300 VUs  1m13.0s/2m0s  200.00 iters/s
+
+running (1m14.0s), 002/300 VUs, 12660 complete and 0 interrupted iterations
+ddos   [  62% ] 002/300 VUs  1m14.0s/2m0s  200.00 iters/s
+
+running (1m15.0s), 030/300 VUs, 12832 complete and 0 interrupted iterations
+ddos   [  62% ] 030/300 VUs  1m15.0s/2m0s  200.00 iters/s
+
+running (1m16.0s), 001/300 VUs, 13061 complete and 0 interrupted iterations
+ddos   [  63% ] 001/300 VUs  1m16.0s/2m0s  200.00 iters/s
+
+running (1m17.0s), 011/300 VUs, 13251 complete and 0 interrupted iterations
+ddos   [  64% ] 011/300 VUs  1m17.0s/2m0s  200.00 iters/s
+
+running (1m18.0s), 001/300 VUs, 13461 complete and 0 interrupted iterations
+ddos   [  65% ] 001/300 VUs  1m18.0s/2m0s  200.00 iters/s
+
+running (1m19.0s), 001/300 VUs, 13661 complete and 0 interrupted iterations
+ddos   [  66% ] 001/300 VUs  1m19.0s/2m0s  200.00 iters/s
+
+running (1m20.0s), 001/300 VUs, 13861 complete and 0 interrupted iterations
+ddos   [  67% ] 001/300 VUs  1m20.0s/2m0s  200.00 iters/s
+
+running (1m21.0s), 001/300 VUs, 14061 complete and 0 interrupted iterations
+ddos   [  67% ] 001/300 VUs  1m21.0s/2m0s  200.00 iters/s
+
+running (1m22.0s), 019/300 VUs, 14243 complete and 0 interrupted iterations
+ddos   [  68% ] 019/300 VUs  1m22.0s/2m0s  200.00 iters/s
+
+running (1m23.0s), 001/300 VUs, 14461 complete and 0 interrupted iterations
+ddos   [  69% ] 001/300 VUs  1m23.0s/2m0s  200.00 iters/s
+
+running (1m24.0s), 001/300 VUs, 14661 complete and 0 interrupted iterations
+ddos   [  70% ] 001/300 VUs  1m24.0s/2m0s  200.00 iters/s
+
+running (1m25.0s), 001/300 VUs, 14861 complete and 0 interrupted iterations
+ddos   [  71% ] 001/300 VUs  1m25.0s/2m0s  200.00 iters/s
+
+running (1m26.0s), 001/300 VUs, 15061 complete and 0 interrupted iterations
+ddos   [  72% ] 001/300 VUs  1m26.0s/2m0s  200.00 iters/s
+
+running (1m27.0s), 010/300 VUs, 15252 complete and 0 interrupted iterations
+ddos   [  72% ] 010/300 VUs  1m27.0s/2m0s  200.00 iters/s
+
+running (1m28.0s), 001/300 VUs, 15461 complete and 0 interrupted iterations
+ddos   [  73% ] 001/300 VUs  1m28.0s/2m0s  200.00 iters/s
+
+running (1m29.0s), 001/300 VUs, 15661 complete and 0 interrupted iterations
+ddos   [  74% ] 001/300 VUs  1m29.0s/2m0s  200.00 iters/s
+
+running (1m30.0s), 011/300 VUs, 15851 complete and 0 interrupted iterations
+ddos   [  75% ] 011/300 VUs  1m30.0s/2m0s  200.00 iters/s
+
+running (1m31.0s), 035/300 VUs, 16027 complete and 0 interrupted iterations
+ddos   [  76% ] 035/300 VUs  1m31.0s/2m0s  200.00 iters/s
+
+running (1m32.0s), 001/300 VUs, 16261 complete and 0 interrupted iterations
+ddos   [  77% ] 001/300 VUs  1m32.0s/2m0s  200.00 iters/s
+
+running (1m33.0s), 023/300 VUs, 16439 complete and 0 interrupted iterations
+ddos   [  77% ] 023/300 VUs  1m33.0s/2m0s  200.00 iters/s
+
+running (1m34.0s), 001/300 VUs, 16661 complete and 0 interrupted iterations
+ddos   [  78% ] 001/300 VUs  1m34.0s/2m0s  200.00 iters/s
+
+running (1m35.0s), 001/300 VUs, 16861 complete and 0 interrupted iterations
+ddos   [  79% ] 001/300 VUs  1m35.0s/2m0s  200.00 iters/s
+
+running (1m36.0s), 002/300 VUs, 17060 complete and 0 interrupted iterations
+ddos   [  80% ] 002/300 VUs  1m36.0s/2m0s  200.00 iters/s
+
+running (1m37.0s), 079/300 VUs, 17183 complete and 0 interrupted iterations
+ddos   [  81% ] 079/300 VUs  1m37.0s/2m0s  200.00 iters/s
+
+running (1m38.0s), 001/300 VUs, 17461 complete and 0 interrupted iterations
+ddos   [  82% ] 001/300 VUs  1m38.0s/2m0s  200.00 iters/s
+
+running (1m39.0s), 001/300 VUs, 17661 complete and 0 interrupted iterations
+ddos   [  82% ] 001/300 VUs  1m39.0s/2m0s  200.00 iters/s
+
+running (1m40.0s), 003/300 VUs, 17859 complete and 0 interrupted iterations
+ddos   [  83% ] 003/300 VUs  1m40.0s/2m0s  200.00 iters/s
+
+running (1m41.0s), 001/300 VUs, 18061 complete and 0 interrupted iterations
+ddos   [  84% ] 001/300 VUs  1m41.0s/2m0s  200.00 iters/s
+
+running (1m42.0s), 005/300 VUs, 18257 complete and 0 interrupted iterations
+ddos   [  85% ] 005/300 VUs  1m42.0s/2m0s  200.00 iters/s
+
+running (1m43.0s), 004/300 VUs, 18458 complete and 0 interrupted iterations
+ddos   [  86% ] 004/300 VUs  1m43.0s/2m0s  200.00 iters/s
+
+running (1m44.0s), 014/300 VUs, 18648 complete and 0 interrupted iterations
+ddos   [  87% ] 014/300 VUs  1m44.0s/2m0s  200.00 iters/s
+
+running (1m45.0s), 001/300 VUs, 18861 complete and 0 interrupted iterations
+ddos   [  87% ] 001/300 VUs  1m45.0s/2m0s  200.00 iters/s
+
+running (1m46.0s), 001/300 VUs, 19061 complete and 0 interrupted iterations
+ddos   [  88% ] 001/300 VUs  1m46.0s/2m0s  200.00 iters/s
+
+running (1m47.0s), 009/300 VUs, 19253 complete and 0 interrupted iterations
+ddos   [  89% ] 009/300 VUs  1m47.0s/2m0s  200.00 iters/s
+
+running (1m48.0s), 001/300 VUs, 19461 complete and 0 interrupted iterations
+ddos   [  90% ] 001/300 VUs  1m48.0s/2m0s  200.00 iters/s
+
+running (1m49.0s), 005/300 VUs, 19657 complete and 0 interrupted iterations
+ddos   [  91% ] 005/300 VUs  1m49.0s/2m0s  200.00 iters/s
+
+running (1m50.0s), 001/300 VUs, 19861 complete and 0 interrupted iterations
+ddos   [  92% ] 001/300 VUs  1m50.0s/2m0s  200.00 iters/s
+
+running (1m51.0s), 001/300 VUs, 20061 complete and 0 interrupted iterations
+ddos   [  92% ] 001/300 VUs  1m51.0s/2m0s  200.00 iters/s
+
+running (1m52.0s), 001/300 VUs, 20261 complete and 0 interrupted iterations
+ddos   [  93% ] 001/300 VUs  1m52.0s/2m0s  200.00 iters/s
+
+running (1m53.0s), 001/300 VUs, 20461 complete and 0 interrupted iterations
+ddos   [  94% ] 001/300 VUs  1m53.0s/2m0s  200.00 iters/s
+
+running (1m54.0s), 005/300 VUs, 20657 complete and 0 interrupted iterations
+ddos   [  95% ] 005/300 VUs  1m54.0s/2m0s  200.00 iters/s
+
+running (1m55.0s), 001/300 VUs, 20861 complete and 0 interrupted iterations
+ddos   [  96% ] 001/300 VUs  1m55.0s/2m0s  200.00 iters/s
+
+running (1m56.0s), 001/300 VUs, 21061 complete and 0 interrupted iterations
+ddos   [  97% ] 001/300 VUs  1m56.0s/2m0s  200.00 iters/s
+
+running (1m57.0s), 001/300 VUs, 21261 complete and 0 interrupted iterations
+ddos   [  97% ] 001/300 VUs  1m57.0s/2m0s  200.00 iters/s
+
+running (1m58.0s), 001/300 VUs, 21461 complete and 0 interrupted iterations
+ddos   [  98% ] 001/300 VUs  1m58.0s/2m0s  200.00 iters/s
+
+running (1m59.0s), 002/300 VUs, 21660 complete and 0 interrupted iterations
+ddos   [  99% ] 002/300 VUs  1m59.0s/2m0s  200.00 iters/s
+
+running (2m00.0s), 002/300 VUs, 21860 complete and 0 interrupted iterations
+ddos   [ 100% ] 002/300 VUs  2m00.0s/2m0s  200.00 iters/s
+
+
+  █ THRESHOLDS 
+
+    http_req_failed
+    ✓ 'rate<0.8' rate=0.00%
+
+
+  █ TOTAL RESULTS 
+
+    checks_total.......: 21865   182.189161/s
+    checks_succeeded...: 100.00% 21865 out of 21865
+    checks_failed......: 0.00%   0 out of 21865
+
+    ✓ alive
+
+    HTTP
+    http_req_duration..............: avg=531.64ms min=2.98ms med=29.2ms  max=9s p(90)=1.95s p(95)=2.84s
+      { expected_response:true }...: avg=531.64ms min=2.98ms med=29.2ms  max=9s p(90)=1.95s p(95)=2.84s
+    http_req_failed................: 0.00%  0 out of 21865
+    http_reqs......................: 21865  182.189161/s
+
+    EXECUTION
+    dropped_iterations.............: 2136   17.798127/s
+    iteration_duration.............: avg=531.91ms min=3.11ms med=29.47ms max=9s p(90)=1.95s p(95)=2.84s
+    iterations.....................: 21865  182.189161/s
+    vus............................: 2      min=0          max=300
+    vus_max........................: 300    min=149        max=300
+
+    NETWORK
+    data_received..................: 2.4 GB 20 MB/s
+    data_sent......................: 1.7 MB 14 kB/s
+
+
+
+
+running (2m00.0s), 000/300 VUs, 21865 complete and 0 interrupted iterations
+ddos ✓ [ 100% ] 000/300 VUs  2m0s  200.00 iters/s

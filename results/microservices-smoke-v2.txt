@@ -1,0 +1,28 @@
+
+         /\      Grafana   /‾‾/  
+    /\  /  \     |\  __   /  /   
+   /  \/    \    | |/ /  /   ‾‾\ 
+  /          \   |   (  |  (‾)  |
+ / __________ \  |_|\_\  \_____/ 
+
+
+     execution: local
+        script: k6/smoke-test.js
+        output: -
+
+     scenarios: (100.00%) 1 scenario, 1 max VUs, 1m0s max duration (incl. graceful stop):
+              * default: 1 looping VUs for 30s (gracefulStop: 30s)
+
+time="2026-06-17T10:44:36+02:00" level=warning msg="Request Failed" error="Get \"http://localhost/api/trips/\": dial tcp 127.0.0.1:80: connect: connection refused"
+
+running (0m01.0s), 1/1 VUs, 0 complete and 0 interrupted iterations
+default   [   3% ] 1 VUs  01.0s/30s
+time="2026-06-17T10:44:37+02:00" level=warning msg="Request Failed" error="Get \"http://localhost/api/trips/\": dial tcp 127.0.0.1:80: connect: connection refused"
+
+running (0m02.0s), 1/1 VUs, 1 complete and 0 interrupted iterations
+default   [   7% ] 1 VUs  02.0s/30s
+time="2026-06-17T10:44:38+02:00" level=warning msg="Request Failed" error="Get \"http://localhost/api/trips/\": dial tcp 127.0.0.1:80: connect: connection refused"
+
+running (0m03.0s), 1/1 VUs, 2 complete and 0 interrupted iterations
+default   [  10% ] 1 VUs  03.0s/30s
+time="2026-06-17T10:44:39+02:00" level=warning msg="Request Failed" error="Get \"http://localhost/api/trips/\": dial tcp 127.0.0.1:80: connect: connection refused"
